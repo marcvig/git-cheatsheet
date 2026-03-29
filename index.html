@@ -206,6 +206,14 @@
     transition: color 0.2s;
   }
   .search-count.no-results { color: #f85149; }
+  .tooltip-hint {
+    text-align: center;
+    font-size: 0.72rem;
+    color: #484f58;
+    margin-top: -10px;
+    margin-bottom: 18px;
+  }
+  body.light .tooltip-hint { color: #8c959f; }
 
   /* ── Badges ───────────────────────────────────────────────────────────── */
   .badge {
@@ -573,6 +581,7 @@
   <button class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
 </div>
 <div class="search-count" id="count"></div>
+<p class="tooltip-hint">Click or hover any command for a longer description &amp; example</p>
 
 <div class="grid" id="grid">
 
@@ -983,6 +992,12 @@
   }
 
   document.querySelectorAll('tr[data-tip]').forEach(row => {
+    row.addEventListener('click', e => {
+      if (tooltip.contains(e.target)) return;
+      cancelClose();
+      clearTimeout(showTimer);
+      openTooltip(row);
+    });
     row.addEventListener('mouseenter', () => {
       cancelClose();
       clearTimeout(showTimer);
