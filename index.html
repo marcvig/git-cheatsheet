@@ -481,11 +481,11 @@
     <table>
       <tr><td>git status</td><td>Show working tree status</td></tr>
       <tr><td>git add &lt;file&gt;</td><td>Stage a specific file</td></tr>
-      <tr><td>git add .</td><td>Stage all changes</td></tr>
+      <tr><td>git add .</td><td>Stage all changes in current directory</td></tr>
       <tr><td>git commit -m "msg"</td><td>Commit with message</td></tr>
       <tr><td>git commit --amend</td><td>Amend the last commit</td></tr>
-      <tr><td>git push</td><td>Push to remote</td></tr>
-      <tr><td>git pull</td><td>Fetch and merge from remote</td></tr>
+      <tr><td>git push</td><td>Push current branch to its upstream</td></tr>
+      <tr><td>git pull</td><td>Fetch and integrate remote changes</td></tr>
       <tr><td>git fetch</td><td>Fetch without merging</td></tr>
     </table>
   </div>
@@ -510,7 +510,7 @@
       <tr><td>git diff</td><td>Show unstaged changes</td></tr>
       <tr><td>git diff --staged</td><td>Show staged changes</td></tr>
       <tr><td>git log --oneline</td><td>Compact commit history</td></tr>
-      <tr><td>git log --oneline --graph</td><td>Visual branch graph</td></tr>
+      <tr><td>git log --oneline --graph --decorate --all</td><td>Visual branch graph (all branches)</td></tr>
       <tr><td>git show &lt;commit&gt;</td><td>Show commit details &amp; diff</td></tr>
     </table>
   </div>
@@ -532,7 +532,7 @@
       <tr><td>git stash</td><td>Stash current changes</td></tr>
       <tr><td>git stash list</td><td>List all stashes</td></tr>
       <tr><td>git stash pop</td><td>Apply &amp; remove latest stash</td></tr>
-      <tr><td>git stash drop</td><td>Discard latest stash</td></tr>
+      <tr><td>git stash drop</td><td>Discard a stash (latest by default)</td></tr>
       <tr><td>git stash apply stash@{n}</td><td>Apply a specific stash</td></tr>
     </table>
   </div>
@@ -558,7 +558,7 @@
       <tr><td>gh auth status</td><td>Show authentication status</td></tr>
       <tr><td>gh repo create</td><td>Create a new repository</td></tr>
       <tr><td>gh repo clone &lt;user/repo&gt;</td><td>Clone a repository</td></tr>
-      <tr><td>gh repo view</td><td>View repo info in browser</td></tr>
+      <tr><td>gh repo view</td><td>View repo info in terminal</td></tr>
     </table>
   </div>
 
