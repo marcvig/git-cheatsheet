@@ -435,9 +435,122 @@
   body.light .back-to-top svg          { stroke: #0d7a5a; }
   body.light .search-clear             { color: #8c959f; }
   body.light .search-clear:hover       { color: #24292f; }
+
+  /* ── Hoverable rows ───────────────────────────────────────────────────── */
+  tr[data-tip]:hover td { background: rgba(29, 158, 117, 0.06); }
+
+  /* ── Tooltip ──────────────────────────────────────────────────────────── */
+  .tooltip {
+    position: fixed;
+    z-index: 1000;
+    background: #1c2128;
+    border: 1px solid #1D9E75;
+    border-radius: 10px;
+    padding: 14px 16px 14px 16px;
+    width: 320px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    display: none;
+    pointer-events: auto;
+  }
+  .tooltip.visible { display: block; }
+  .tooltip-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #484f58;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 2px 7px;
+    border-radius: 4px;
+    line-height: 1;
+    transition: color 0.15s, background 0.15s;
+  }
+  .tooltip-close:hover { color: #e2e8f0; background: #30363d; }
+  .tooltip-cmd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #1D9E75;
+    font-weight: 600;
+    margin-bottom: 6px;
+    margin-right: 20px;
+    word-break: break-word;
+  }
+  .tooltip-desc {
+    font-size: 0.8rem;
+    color: #c9d1d9;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .tooltip-example-label {
+    font-size: 0.65rem;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 5px;
+  }
+  .tooltip-example-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 7px 10px;
+  }
+  .tooltip-example-code {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #e3b341;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tooltip-copy {
+    background: #1D9E7518;
+    border: 1px solid #1D9E7544;
+    color: #1D9E75;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tooltip-copy:hover { background: #1D9E7530; }
+  .tooltip-copy.copied { color: #7ee787; border-color: #7ee78755; background: #7ee78718; }
+
+  /* Light mode tooltip */
+  body.light .tooltip               { background: #f6f8fa; border-color: #0d7a5a; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+  body.light .tooltip-close         { color: #8c959f; }
+  body.light .tooltip-close:hover   { color: #24292f; background: #eaeef2; }
+  body.light .tooltip-cmd           { color: #0d7a5a; }
+  body.light .tooltip-desc          { color: #24292f; }
+  body.light .tooltip-example-label { color: #57606a; }
+  body.light .tooltip-example-row   { background: #eaeef2; border-color: #d0d7de; }
+  body.light .tooltip-example-code  { color: #9a6700; }
+  body.light .tooltip-copy          { background: #0d7a5a12; border-color: #0d7a5a44; color: #0d7a5a; }
+  body.light .tooltip-copy:hover    { background: #0d7a5a22; }
+  body.light .tooltip-copy.copied   { color: #116329; border-color: #11632955; background: #11632912; }
 </style>
 </head>
 <body>
+
+<!-- Tooltip -->
+<div id="tooltip" class="tooltip" role="tooltip">
+  <button class="tooltip-close" id="tooltipClose" aria-label="Close">✕</button>
+  <div class="tooltip-cmd" id="tooltipCmd"></div>
+  <div class="tooltip-desc" id="tooltipDesc"></div>
+  <div class="tooltip-example-label">Example</div>
+  <div class="tooltip-example-row">
+    <code class="tooltip-example-code" id="tooltipCode"></code>
+    <button class="tooltip-copy" id="tooltipCopy">Copy</button>
+  </div>
+</div>
 
 <div class="header-top">
   <button class="branch-btn" id="branchBtn" aria-label="🌿 Easter egg" title="Try clicking me…">🌿</button>
@@ -468,84 +581,89 @@
   <div class="card" data-tab="git">
     <div class="card-header">Setup &amp; Config</div>
     <table>
-      <tr><td>git config --global user.name</td><td>Set global username</td></tr>
-      <tr><td>git config --global user.email</td><td>Set global email</td></tr>
-      <tr><td>git config --list</td><td>Show all config values</td></tr>
-      <tr><td>git init</td><td>Initialize new repository</td></tr>
-      <tr><td>git clone &lt;url&gt;</td><td>Clone a remote repository</td></tr>
+      <tr data-tip="Sets the author name attached to every commit on this machine" data-example="git config --global user.name &quot;Jane Doe&quot;"><td>git config --global user.name</td><td>Set global username</td></tr>
+      <tr data-tip="Sets the author email attached to every commit on this machine" data-example="git config --global user.email &quot;jane@example.com&quot;"><td>git config --global user.email</td><td>Set global email</td></tr>
+      <tr data-tip="Prints all config key-value pairs in effect, from global and local settings" data-example="git config --list"><td>git config --list</td><td>Show all config values</td></tr>
+      <tr data-tip="Creates a .git directory in the current folder, turning it into a Git repository" data-example="git init"><td>git init</td><td>Initialize new repository</td></tr>
+      <tr data-tip="Downloads the full repository history and files into a new local directory" data-example="git clone https://github.com/user/repo.git"><td>git clone &lt;url&gt;</td><td>Clone a remote repository</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="git">
     <div class="card-header green">Daily Workflow</div>
     <table>
-      <tr><td>git status</td><td>Show working tree status</td></tr>
-      <tr><td>git add &lt;file&gt;</td><td>Stage a specific file</td></tr>
-      <tr><td>git add .</td><td>Stage all changes in current directory</td></tr>
-      <tr><td>git commit -m "msg"</td><td>Commit with message</td></tr>
-      <tr><td>git commit --amend</td><td>Amend the last commit</td></tr>
-      <tr><td>git push</td><td>Push current branch to its upstream</td></tr>
-      <tr><td>git pull</td><td>Fetch and integrate remote changes</td></tr>
-      <tr><td>git fetch</td><td>Fetch without merging</td></tr>
+      <tr data-tip="Shows which files are staged, modified, or untracked since the last commit" data-example="git status"><td>git status</td><td>Show working tree status</td></tr>
+      <tr data-tip="Moves the named file to the staging area to be included in the next commit" data-example="git add README.md"><td>git add &lt;file&gt;</td><td>Stage a specific file</td></tr>
+      <tr data-tip="Stages all new, modified, and deleted files in the current directory recursively" data-example="git add ."><td>git add .</td><td>Stage all changes in current directory</td></tr>
+      <tr data-tip="Interactively choose which chunks of changes to stage — great for splitting one file across multiple commits" data-example="git add -p"><td>git add -p</td><td>Interactively stage chunks</td></tr>
+      <tr data-tip="Saves all staged changes as a new commit with your message describing what changed" data-example="git commit -m &quot;Fix null pointer in login&quot;"><td>git commit -m "msg"</td><td>Commit with message</td></tr>
+      <tr data-tip="Stages all tracked file changes and commits in one step; does not include untracked new files" data-example="git commit -am &quot;Update nav styles&quot;"><td>git commit -am "msg"</td><td>Commit all tracked changes</td></tr>
+      <tr data-tip="Rewrites the last commit — edit its message or add forgotten staged changes before pushing" data-example="git commit --amend"><td>git commit --amend</td><td>Amend the last commit</td></tr>
+      <tr data-tip="Uploads your local branch commits to its configured upstream remote branch" data-example="git push"><td>git push</td><td>Push current branch to its upstream</td></tr>
+      <tr data-tip="Fetches changes from the remote and integrates them — merges by default, or rebases if configured" data-example="git pull"><td>git pull</td><td>Fetch and integrate changes (merge or rebase)</td></tr>
+      <tr data-tip="Downloads remote changes into tracking branches without touching your working directory" data-example="git fetch origin"><td>git fetch</td><td>Fetch without merging</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="git">
     <div class="card-header orange">Branching</div>
     <table>
-      <tr><td>git branch</td><td>List all branches</td></tr>
-      <tr><td>git branch &lt;name&gt;</td><td>Create new branch</td></tr>
-      <tr><td>git switch &lt;branch&gt;</td><td>Switch to branch</td></tr>
-      <tr><td>git checkout -b &lt;n&gt;</td><td>Create &amp; switch to new branch</td></tr>
-      <tr><td>git merge &lt;branch&gt;</td><td>Merge branch into current</td></tr>
-      <tr><td>git rebase &lt;branch&gt;</td><td>Rebase onto branch</td></tr>
-      <tr><td>git branch -d &lt;name&gt;</td><td>Delete local branch</td></tr>
-      <tr><td>git push origin --delete &lt;name&gt;</td><td>Delete remote branch</td></tr>
+      <tr data-tip="Lists all local branches with an asterisk marking the one you are currently on" data-example="git branch"><td>git branch</td><td>List all branches</td></tr>
+      <tr data-tip="Creates a new branch pointing to the current commit without switching to it" data-example="git branch feature/user-auth"><td>git branch &lt;name&gt;</td><td>Create new branch</td></tr>
+      <tr data-tip="Switches your working directory to the named branch, updating all tracked files" data-example="git switch main"><td>git switch &lt;branch&gt;</td><td>Switch to branch</td></tr>
+      <tr data-tip="Creates a new branch and immediately switches to it — shorthand for branch + switch" data-example="git checkout -b feature/login"><td>git checkout -b &lt;name&gt;</td><td>Create &amp; switch to new branch</td></tr>
+      <tr data-tip="Joins the history of the specified branch into your current branch, creating a merge commit if needed" data-example="git merge feature/user-auth"><td>git merge &lt;branch&gt;</td><td>Merge branch into current</td></tr>
+      <tr data-tip="Replays your current branch commits on top of the target branch for a clean linear history" data-example="git rebase main"><td>git rebase &lt;branch&gt;</td><td>Rebase onto branch</td></tr>
+      <tr data-tip="Applies the changes from a specific commit onto your current branch — useful for backporting fixes" data-example="git cherry-pick a3f5c2d"><td>git cherry-pick &lt;commit&gt;</td><td>Apply a specific commit</td></tr>
+      <tr data-tip="Deletes a fully merged branch; use -D to force-delete an unmerged one" data-example="git branch -d feature/user-auth"><td>git branch -d &lt;name&gt;</td><td>Delete local branch</td></tr>
+      <tr data-tip="Removes the named branch from the remote repository so teammates no longer see it" data-example="git push origin --delete feature/user-auth"><td>git push origin --delete &lt;name&gt;</td><td>Delete remote branch</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="git">
     <div class="card-header blue">Diffs &amp; Logs</div>
     <table>
-      <tr><td>git diff</td><td>Show unstaged changes</td></tr>
-      <tr><td>git diff --staged</td><td>Show staged changes</td></tr>
-      <tr><td>git log --oneline</td><td>Compact commit history</td></tr>
-      <tr><td>git log --oneline --graph --decorate --all</td><td>Visual branch graph (all branches)</td></tr>
-      <tr><td>git show &lt;commit&gt;</td><td>Show commit details &amp; diff</td></tr>
+      <tr data-tip="Shows line-by-line changes in your working directory that have not been staged yet" data-example="git diff"><td>git diff</td><td>Show unstaged changes</td></tr>
+      <tr data-tip="Shows changes that are staged and will be included in the next commit" data-example="git diff --staged"><td>git diff --staged</td><td>Show staged changes</td></tr>
+      <tr data-tip="Displays each commit as one line: abbreviated hash followed by the commit message" data-example="git log --oneline"><td>git log --oneline</td><td>Compact commit history</td></tr>
+      <tr data-tip="Draws an ASCII graph of all branches with ref labels and tags alongside the commit history" data-example="git log --oneline --graph --decorate --all"><td>git log --oneline --graph --decorate --all</td><td>Visual branch graph (all branches)</td></tr>
+      <tr data-tip="Displays full metadata and diff for a specific commit; defaults to HEAD when no commit is given" data-example="git show a3f5c2d"><td>git show &lt;commit&gt;</td><td>Show commit details &amp; diff</td></tr>
+      <tr data-tip="Annotates every line of a file with the commit hash, author, and date of its last change" data-example="git blame src/app.js"><td>git blame &lt;file&gt;</td><td>Show who changed each line</td></tr>
+      <tr data-tip="Records every movement of HEAD including resets and rebases — your safety net for recovering lost commits" data-example="git reflog"><td>git reflog</td><td>Show full HEAD history</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="git">
     <div class="card-header red">Undoing Things</div>
     <table>
-      <tr><td>git restore &lt;file&gt;</td><td>Discard working dir changes</td></tr>
-      <tr><td>git reset HEAD &lt;file&gt;</td><td>Unstage a file</td></tr>
-      <tr><td>git reset --soft HEAD~1</td><td>Undo commit, keep staged</td></tr>
-      <tr><td>git reset --hard HEAD~1</td><td>Undo commit &amp; discard changes</td></tr>
-      <tr><td>git revert &lt;commit&gt;</td><td>Create a revert commit</td></tr>
+      <tr data-tip="Discards all uncommitted changes in the file, restoring it to the state of the last commit" data-example="git restore index.html"><td>git restore &lt;file&gt;</td><td>Discard working dir changes</td></tr>
+      <tr data-tip="Removes the file from the staging area while keeping your edits in the working directory" data-example="git reset HEAD README.md"><td>git reset HEAD &lt;file&gt;</td><td>Unstage a file</td></tr>
+      <tr data-tip="Moves HEAD back one commit but keeps all its changes staged and ready to re-commit" data-example="git reset --soft HEAD~1"><td>git reset --soft HEAD~1</td><td>Undo commit, keep staged</td></tr>
+      <tr data-tip="Permanently discards the last commit and all its changes — use with caution, cannot be easily undone" data-example="git reset --hard HEAD~1"><td>git reset --hard HEAD~1</td><td>Undo commit &amp; discard changes</td></tr>
+      <tr data-tip="Creates a new commit that undoes a previous one, preserving full history — safe for shared branches" data-example="git revert a3f5c2d"><td>git revert &lt;commit&gt;</td><td>Create a revert commit</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="git">
     <div class="card-header yellow">Stashing</div>
     <table>
-      <tr><td>git stash</td><td>Stash current changes</td></tr>
-      <tr><td>git stash list</td><td>List all stashes</td></tr>
-      <tr><td>git stash pop</td><td>Apply &amp; remove latest stash</td></tr>
-      <tr><td>git stash drop</td><td>Discard a stash (latest by default)</td></tr>
-      <tr><td>git stash apply stash@{n}</td><td>Apply a specific stash</td></tr>
+      <tr data-tip="Saves uncommitted changes to a temporary stack so you can switch branches with a clean working directory" data-example="git stash"><td>git stash</td><td>Stash current changes</td></tr>
+      <tr data-tip="Shows all saved stashes with index numbers, e.g. stash@{0}, and the branch they were saved on" data-example="git stash list"><td>git stash list</td><td>List all stashes</td></tr>
+      <tr data-tip="Applies the most recent stash to your working directory and removes it from the stash stack" data-example="git stash pop"><td>git stash pop</td><td>Apply &amp; remove latest stash</td></tr>
+      <tr data-tip="Permanently deletes a stash from the list; removes the most recent one if no stash is specified" data-example="git stash drop"><td>git stash drop</td><td>Discard a stash (latest by default)</td></tr>
+      <tr data-tip="Applies a specific stash by index without removing it from the stack, useful for reusing a stash" data-example="git stash apply stash@{2}"><td>git stash apply stash@{n}</td><td>Apply a specific stash</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="git">
     <div class="card-header purple">Remotes &amp; Tags</div>
     <table>
-      <tr><td>git remote -v</td><td>List remotes with URLs</td></tr>
-      <tr><td>git remote add origin &lt;url&gt;</td><td>Add remote origin</td></tr>
-      <tr><td>git push -u origin &lt;branch&gt;</td><td>Push &amp; set upstream</td></tr>
-      <tr><td>git tag</td><td>List all tags</td></tr>
-      <tr><td>git tag v1.0</td><td>Create lightweight tag</td></tr>
-      <tr><td>git push origin --tags</td><td>Push all tags to remote</td></tr>
+      <tr data-tip="Lists all configured remote connections with their fetch and push URLs" data-example="git remote -v"><td>git remote -v</td><td>List remotes with URLs</td></tr>
+      <tr data-tip="Links your local repo to a remote so you can push commits and pull changes" data-example="git remote add origin git@github.com:user/repo.git"><td>git remote add origin &lt;url&gt;</td><td>Add remote origin</td></tr>
+      <tr data-tip="Pushes the branch and sets it as the default upstream for future git push and pull commands" data-example="git push -u origin main"><td>git push -u origin &lt;branch&gt;</td><td>Push &amp; set upstream</td></tr>
+      <tr data-tip="Lists all tags in the repository in alphabetical order" data-example="git tag"><td>git tag</td><td>List all tags</td></tr>
+      <tr data-tip="Creates a lightweight tag on the current commit, typically used to mark a release version" data-example="git tag v1.0"><td>git tag v1.0</td><td>Create lightweight tag</td></tr>
+      <tr data-tip="Uploads all local tags to the remote repository so all collaborators can access them" data-example="git push origin --tags"><td>git push origin --tags</td><td>Push all tags to remote</td></tr>
     </table>
   </div>
 
@@ -554,44 +672,44 @@
   <div class="card" data-tab="gh">
     <div class="card-header">Repos &amp; Auth <span class="badge badge-gh">gh cli</span></div>
     <table>
-      <tr><td>gh auth login</td><td>Authenticate with GitHub</td></tr>
-      <tr><td>gh auth status</td><td>Show authentication status</td></tr>
-      <tr><td>gh repo create</td><td>Create a new repository</td></tr>
-      <tr><td>gh repo clone &lt;user/repo&gt;</td><td>Clone a repository</td></tr>
-      <tr><td>gh repo view</td><td>View repo info in terminal</td></tr>
+      <tr data-tip="Opens an interactive prompt to authenticate the CLI with your GitHub account via browser or personal token" data-example="gh auth login"><td>gh auth login</td><td>Authenticate with GitHub</td></tr>
+      <tr data-tip="Shows which GitHub account is active and whether the stored token has the required permissions" data-example="gh auth status"><td>gh auth status</td><td>Show authentication status</td></tr>
+      <tr data-tip="Creates a new GitHub repository and optionally links or pushes your local project to it" data-example="gh repo create my-project --public"><td>gh repo create</td><td>Create a new repository</td></tr>
+      <tr data-tip="Clones a GitHub repository using the owner/name shorthand instead of a full HTTPS or SSH URL" data-example="gh repo clone torvalds/linux"><td>gh repo clone &lt;user/repo&gt;</td><td>Clone a repository</td></tr>
+      <tr data-tip="Displays the repository description and README in the terminal; add --web to open in browser instead" data-example="gh repo view"><td>gh repo view</td><td>View repo info in terminal</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="gh">
     <div class="card-header green">Pull Requests <span class="badge badge-gh">gh cli</span></div>
     <table>
-      <tr><td>gh pr create</td><td>Open a new pull request</td></tr>
-      <tr><td>gh pr list</td><td>List open pull requests</td></tr>
-      <tr><td>gh pr view</td><td>View current branch PR</td></tr>
-      <tr><td>gh pr merge</td><td>Merge a pull request</td></tr>
-      <tr><td>gh pr checkout &lt;number&gt;</td><td>Check out a PR locally</td></tr>
-      <tr><td>gh pr review --approve</td><td>Approve a pull request</td></tr>
+      <tr data-tip="Opens a prompt to create a pull request from your current branch to the base branch" data-example="gh pr create --title &quot;Add login page&quot; --body &quot;Closes #12&quot;"><td>gh pr create</td><td>Open a new pull request</td></tr>
+      <tr data-tip="Lists all open pull requests for the current repository with their number, title, and branch" data-example="gh pr list"><td>gh pr list</td><td>List open pull requests</td></tr>
+      <tr data-tip="Shows the title, description, status, and review state of a pull request" data-example="gh pr view 42"><td>gh pr view</td><td>View current branch PR</td></tr>
+      <tr data-tip="Merges a pull request using merge commit, squash, or rebase — prompts for strategy if not specified" data-example="gh pr merge 42 --squash"><td>gh pr merge</td><td>Merge a pull request</td></tr>
+      <tr data-tip="Checks out the branch for a pull request locally so you can test or review the changes" data-example="gh pr checkout 42"><td>gh pr checkout &lt;number&gt;</td><td>Check out a PR locally</td></tr>
+      <tr data-tip="Submits an approval review on a pull request, moving it toward merge readiness" data-example="gh pr review 42 --approve"><td>gh pr review --approve</td><td>Approve a pull request</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="gh">
     <div class="card-header orange">Issues <span class="badge badge-gh">gh cli</span></div>
     <table>
-      <tr><td>gh issue create</td><td>Create a new issue</td></tr>
-      <tr><td>gh issue list</td><td>List open issues</td></tr>
-      <tr><td>gh issue view &lt;number&gt;</td><td>View issue details</td></tr>
-      <tr><td>gh issue close &lt;number&gt;</td><td>Close an issue</td></tr>
+      <tr data-tip="Opens an interactive prompt to file a new issue with title, body, labels, and assignees" data-example="gh issue create --title &quot;Bug: login fails on Safari&quot;"><td>gh issue create</td><td>Create a new issue</td></tr>
+      <tr data-tip="Lists open issues for the current repo, filterable by label, assignee, or state" data-example="gh issue list --label bug"><td>gh issue list</td><td>List open issues</td></tr>
+      <tr data-tip="Displays the title, body, labels, and comments for a specific issue" data-example="gh issue view 12"><td>gh issue view &lt;number&gt;</td><td>View issue details</td></tr>
+      <tr data-tip="Closes an issue and optionally adds a closing comment" data-example="gh issue close 12"><td>gh issue close &lt;number&gt;</td><td>Close an issue</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="gh">
     <div class="card-header blue">Actions &amp; Releases <span class="badge badge-gh">gh cli</span></div>
     <table>
-      <tr><td>gh run list</td><td>List recent workflow runs</td></tr>
-      <tr><td>gh run view &lt;id&gt;</td><td>View a workflow run</td></tr>
-      <tr><td>gh run watch</td><td>Watch a run in real-time</td></tr>
-      <tr><td>gh release create</td><td>Create a new release</td></tr>
-      <tr><td>gh release list</td><td>List all releases</td></tr>
+      <tr data-tip="Lists the most recent GitHub Actions workflow runs for the current repository" data-example="gh run list"><td>gh run list</td><td>List recent workflow runs</td></tr>
+      <tr data-tip="Shows the status, step-by-step log, and result of a specific workflow run" data-example="gh run view 9876543210"><td>gh run view &lt;id&gt;</td><td>View a workflow run</td></tr>
+      <tr data-tip="Streams live output of the most recent workflow run in your terminal until it completes" data-example="gh run watch"><td>gh run watch</td><td>Watch a run in real-time</td></tr>
+      <tr data-tip="Creates a new GitHub release with a version tag, title, and auto-generated or custom release notes" data-example="gh release create v2.0.0 --generate-notes"><td>gh release create</td><td>Create a new release</td></tr>
+      <tr data-tip="Lists all published releases for the repository showing tag name and creation date" data-example="gh release list"><td>gh release list</td><td>List all releases</td></tr>
     </table>
   </div>
 
@@ -810,6 +928,96 @@
     document.body.classList.toggle('light');
     localStorage.setItem('git-theme', document.body.classList.contains('light') ? 'light' : 'dark');
     updateIcon();
+  });
+</script>
+
+<script>
+  // ── Tooltip ────────────────────────────────────────────────────────────────
+  const tooltip     = document.getElementById('tooltip');
+  const tooltipCmd  = document.getElementById('tooltipCmd');
+  const tooltipDesc = document.getElementById('tooltipDesc');
+  const tooltipCode = document.getElementById('tooltipCode');
+  const tooltipCopy = document.getElementById('tooltipCopy');
+  const tooltipClose = document.getElementById('tooltipClose');
+
+  let showTimer = null;
+  let hideTimer = null;
+  let tipVisible = false;
+
+  function openTooltip(row) {
+    tooltipCmd.textContent  = row.querySelector('td:first-child').textContent;
+    tooltipDesc.textContent = row.dataset.tip;
+    tooltipCode.textContent = row.dataset.example;
+    tooltipCopy.textContent = 'Copy';
+    tooltipCopy.classList.remove('copied');
+    tooltip.classList.add('visible');
+    tipVisible = true;
+
+    // Position after render so offsetWidth/Height are available
+    requestAnimationFrame(() => {
+      const rect = row.getBoundingClientRect();
+      const tw = tooltip.offsetWidth;
+      const th = tooltip.offsetHeight;
+      let x = rect.right + 12;
+      let y = rect.top;
+      // Flip left if no room on right
+      if (x + tw > window.innerWidth - 12) x = rect.left - tw - 12;
+      // Clamp vertically
+      if (y + th > window.innerHeight - 12) y = window.innerHeight - th - 12;
+      tooltip.style.left = Math.max(8, x) + 'px';
+      tooltip.style.top  = Math.max(8, y) + 'px';
+    });
+  }
+
+  function closeTooltip() {
+    tooltip.classList.remove('visible');
+    tipVisible = false;
+  }
+
+  function scheduleClose() {
+    hideTimer = setTimeout(closeTooltip, 120);
+  }
+
+  function cancelClose() {
+    clearTimeout(hideTimer);
+  }
+
+  document.querySelectorAll('tr[data-tip]').forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      cancelClose();
+      clearTimeout(showTimer);
+      showTimer = setTimeout(() => openTooltip(row), 2000);
+    });
+    row.addEventListener('mouseleave', e => {
+      clearTimeout(showTimer);
+      if (tipVisible && !tooltip.contains(e.relatedTarget)) scheduleClose();
+    });
+  });
+
+  tooltip.addEventListener('mouseenter', cancelClose);
+  tooltip.addEventListener('mouseleave', e => {
+    if (!e.relatedTarget || !e.relatedTarget.closest('tr[data-tip]')) scheduleClose();
+  });
+
+  tooltipClose.addEventListener('click', closeTooltip);
+
+  document.addEventListener('click', e => {
+    if (tipVisible && !tooltip.contains(e.target)) closeTooltip();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && tipVisible) closeTooltip();
+  });
+
+  tooltipCopy.addEventListener('click', () => {
+    navigator.clipboard.writeText(tooltipCode.textContent).then(() => {
+      tooltipCopy.textContent = 'Copied!';
+      tooltipCopy.classList.add('copied');
+      setTimeout(() => {
+        tooltipCopy.textContent = 'Copy';
+        tooltipCopy.classList.remove('copied');
+      }, 2000);
+    });
   });
 </script>
 
