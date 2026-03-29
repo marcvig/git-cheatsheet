@@ -207,13 +207,48 @@
   }
   .search-count.no-results { color: #f85149; }
   .tooltip-hint {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     font-size: 0.72rem;
     color: #8b949e;
     margin-top: -10px;
     margin-bottom: 18px;
   }
   body.light .tooltip-hint { color: #57606a; }
+
+  /* ── Tooltip toggle switch ────────────────────────────────────────────── */
+  .toggle-switch {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .toggle-switch input { display: none; }
+  .toggle-track {
+    width: 34px;
+    height: 19px;
+    background: #30363d;
+    border-radius: 10px;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .toggle-switch input:checked + .toggle-track { background: #1D9E75; }
+  .toggle-thumb {
+    position: absolute;
+    top: 2.5px;
+    left: 2.5px;
+    width: 14px;
+    height: 14px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .toggle-switch input:checked + .toggle-track .toggle-thumb { transform: translateX(15px); }
+  body.light .toggle-track                      { background: #d0d7de; }
+  body.light .toggle-switch input:checked + .toggle-track { background: #0d7a5a; }
 
   /* ── Badges ───────────────────────────────────────────────────────────── */
   .badge {
@@ -582,7 +617,13 @@
   <button class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
 </div>
 <div class="search-count" id="count"></div>
-<p class="tooltip-hint">Click or hover any command for a longer description &amp; example</p>
+<p class="tooltip-hint">
+  <label class="toggle-switch" title="Enable / disable command tooltips">
+    <input type="checkbox" id="tooltipToggle" checked>
+    <span class="toggle-track"><span class="toggle-thumb"></span></span>
+  </label>
+  Click or hover any command for a longer description &amp; example
+</p>
 
 <div class="grid" id="grid">
 
@@ -950,6 +991,13 @@
   const tooltipCopy = document.getElementById('tooltipCopy');
   const tooltipClose = document.getElementById('tooltipClose');
 
+  const tooltipToggle = document.getElementById('tooltipToggle');
+  const tipsEnabled = () => tooltipToggle.checked;
+
+  tooltipToggle.addEventListener('change', () => {
+    if (!tooltipToggle.checked) closeTooltip();
+  });
+
   let showTimer = null;
   let hideTimer = null;
   let tipVisible = false;
@@ -994,7 +1042,7 @@
 
   document.querySelectorAll('tr[data-tip]').forEach(row => {
     row.addEventListener('click', e => {
-      if (tooltip.contains(e.target)) return;
+      if (!tipsEnabled() || tooltip.contains(e.target)) return;
       e.stopPropagation();
       cancelClose();
       clearTimeout(showTimer);
@@ -1003,6 +1051,7 @@
     row.addEventListener('mouseenter', () => {
       cancelClose();
       clearTimeout(showTimer);
+      if (!tipsEnabled()) return;
       showTimer = setTimeout(() => openTooltip(row), 2000);
     });
     row.addEventListener('mouseleave', e => {
