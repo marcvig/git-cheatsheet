@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+  }
+  body {
+    background: #0d1117;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Background grid pattern */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(#1D9E7508 1px, transparent 1px),
+      linear-gradient(90deg, #1D9E7508 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Top glow */
+  .bg-glow {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 300px;
+    background: radial-gradient(ellipse at center, #1D9E7522 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 80px;
+  }
+
+  /* Icon row */
+  .icon-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .git-icon {
+    width: 56px;
+    height: 56px;
+    background: #1D9E7518;
+    border: 1.5px solid #1D9E7555;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .icon-divider {
+    width: 1px;
+    height: 32px;
+    background: #30363d;
+  }
+  .gh-icon {
+    width: 56px;
+    height: 56px;
+    background: #d2a8ff18;
+    border: 1.5px solid #d2a8ff44;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Title */
+  .title {
+    font-size: 68px;
+    font-weight: 800;
+    color: #e2e8f0;
+    letter-spacing: -1px;
+    line-height: 1.05;
+    margin-bottom: 18px;
+  }
+  .title .accent { color: #1D9E75; }
+
+  /* Subtitle */
+  .subtitle {
+    font-size: 24px;
+    color: #8b949e;
+    font-weight: 400;
+    margin-bottom: 40px;
+    letter-spacing: 0.2px;
+  }
+
+  /* Command pills */
+  .pills {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .pill {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1D9E75;
+    letter-spacing: 0.3px;
+  }
+  .pill.purple { color: #d2a8ff; border-color: #d2a8ff33; background: #d2a8ff08; }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1D9E75, #7ee787, #1D9E75);
+  }
+
+  /* Corner badge */
+  .corner-badge {
+    position: absolute;
+    top: 32px;
+    right: 40px;
+    font-size: 13px;
+    color: #484f58;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <div class="content">
+    <div class="icon-row">
+      <!-- Git branch SVG -->
+      <div class="git-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="3" r="2"/><circle cx="6" cy="21" r="2"/><circle cx="18" cy="7" r="2"/>
+          <line x1="6" y1="5" x2="6" y2="19"/>
+          <path d="M6 7 Q6 9 18 9" />
+        </svg>
+      </div>
+      <div class="icon-divider"></div>
+      <!-- GitHub Octocat-ish mark -->
+      <div class="gh-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#d2a8ff">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="title">Git &amp; <span class="accent">GitHub</span> Cheatsheet</div>
+    <div class="subtitle">62 commands · searchable · Git + GitHub CLI reference</div>
+
+    <div class="pills">
+      <div class="pill">git commit</div>
+      <div class="pill">git branch</div>
+      <div class="pill">git stash</div>
+      <div class="pill">git rebase</div>
+      <div class="pill purple">gh pr create</div>
+      <div class="pill purple">gh repo clone</div>
+      <div class="pill purple">gh run watch</div>
+    </div>
+  </div>
+
+  <div class="bottom-bar"></div>
+  <div class="corner-badge">gitcheatsheet.dev</div>
+</body>
+</html>
