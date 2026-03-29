@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Flash prevention: apply saved theme before first paint -->
+<script>
+  if (localStorage.getItem('git-theme') === 'light') document.documentElement.classList.add('preload-light');
+</script>
+<style>.preload-light body, html.preload-light body { background: #ffffff; }</style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+     PRIMARY META
+     ============================================================ -->
+<title>Git &amp; GitHub Cheatsheet — Complete Git Command Reference</title>
+<meta name="description" content="A fast, searchable Git and GitHub CLI cheatsheet covering every essential command: setup, branching, commits, diffs, stashing, remotes, pull requests, issues, actions, and releases.">
+<meta name="keywords" content="git cheatsheet, github cli cheatsheet, git commands, gh cli, git reference, git branch, git commit, git stash, git merge, git rebase, github pull request, git tutorial, git guide">
+<meta name="author" content="marc-bfa">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="theme-color" content="#0d1117">
+
+<!-- ============================================================
+     CANONICAL
+     ============================================================ -->
+<link rel="canonical" href="https://marcvig.github.io/git-cheatsheet/">
+
+<!-- ============================================================
+     OPEN GRAPH
+     ============================================================ -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Git &amp; GitHub Cheatsheet">
+<meta property="og:title" content="Git &amp; GitHub Cheatsheet — Complete Git Command Reference">
+<meta property="og:description" content="A fast, searchable Git and GitHub CLI cheatsheet covering every essential command: setup, branching, commits, diffs, stashing, remotes, pull requests, issues, actions, and releases.">
+<meta property="og:url" content="https://marcvig.github.io/git-cheatsheet/">
+<meta property="og:image" content="https://marcvig.github.io/git-cheatsheet/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Git &amp; GitHub Cheatsheet — searchable command reference">
+<meta property="og:locale" content="en_US">
+
+<!-- ============================================================
+     TWITTER / X CARD
+     ============================================================ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Git &amp; GitHub Cheatsheet — Complete Git Command Reference">
+<meta name="twitter:description" content="A fast, searchable Git and GitHub CLI cheatsheet covering every essential command: setup, branching, commits, diffs, stashing, remotes, pull requests, issues, actions, and releases.">
+<meta name="twitter:image" content="https://marcvig.github.io/git-cheatsheet/og-image.png">
+<meta name="twitter:image:alt" content="Git &amp; GitHub Cheatsheet — searchable command reference">
+
+<!-- ============================================================
+     JSON-LD STRUCTURED DATA
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "name": "Git & GitHub Cheatsheet — Complete Git Command Reference",
+  "description": "A fast, searchable Git and GitHub CLI cheatsheet covering every essential command: setup, branching, commits, diffs, stashing, remotes, pull requests, issues, actions, and releases.",
+  "url": "https://marcvig.github.io/git-cheatsheet/",
+  "inLanguage": "en-US",
+  "author": {
+    "@type": "Person",
+    "name": "marc-bfa"
+  },
+  "datePublished": "2026-03-29",
+  "dateModified": "2026-03-29",
+  "keywords": "git, github, cli, cheatsheet, commands, version control, reference",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Git & GitHub Cheatsheet",
+    "url": "https://marcvig.github.io/git-cheatsheet/"
+  }
+}
+</script>
+
+<!-- ============================================================
+     FAVICONS
+     ============================================================ -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+<!-- ============================================================
+     GOOGLE FONTS
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #e2e8f0;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: #1D9E75;
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #8b949e;
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    margin-top: 8px;
+    margin-bottom: 18px;
+  }
+
+  /* ── Tabs ─────────────────────────────────────────────────────────────── */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .tab {
+    padding: 6px 20px;
+    border-radius: 20px;
+    border: 1px solid #30363d;
+    background: #161b22;
+    color: #8b949e;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .tab:hover {
+    border-color: #1D9E75;
+    color: #1D9E75;
+  }
+  .tab.active {
+    border-color: #1D9E75;
+    color: #1D9E75;
+    background: #1D9E7518;
+  }
+
+  /* ── Search ───────────────────────────────────────────────────────────── */
+  .search-wrap {
+    max-width: 540px;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 11px 16px 11px 42px;
+    background: #161b22;
+    border: 1px solid #1D9E7566;
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-wrap input:focus {
+    border-color: #1D9E75;
+    box-shadow: 0 0 0 3px #1D9E7533;
+  }
+  .search-wrap input::placeholder { color: #484f58; }
+  .search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #484f58;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    line-height: 1;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s, color 0.15s;
+  }
+  .search-clear.visible { opacity: 1; pointer-events: auto; }
+  .search-clear:hover { color: #e2e8f0; }
+  .search-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1D9E75;
+    font-size: 1rem;
+    pointer-events: none;
+  }
+  .search-count {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #8b949e;
+    margin-top: -14px;
+    margin-bottom: 18px;
+    min-height: 18px;
+    transition: color 0.2s;
+  }
+  .search-count.no-results { color: #f85149; }
+
+  /* ── Badges ───────────────────────────────────────────────────────────── */
+  .badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+    margin-left: 6px;
+  }
+  .badge-gh {
+    background: #d2a8ff22;
+    color: #d2a8ff;
+    border: 1px solid #d2a8ff55;
+  }
+
+  /* ── Grid & Cards ─────────────────────────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .card.hidden, .card.tab-hidden { display: none; }
+  .card-header {
+    background: #21262d;
+    padding: 10px 14px;
+    font-size: clamp(0.68rem, 1.5vw, 0.75rem);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #1D9E75;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+  }
+  .card-header.green  { color: #7ee787; }
+  .card-header.orange { color: #f0883e; }
+  .card-header.purple { color: #d2a8ff; }
+  .card-header.red    { color: #f85149; }
+  .card-header.yellow { color: #e3b341; }
+  .card-header.blue   { color: #58a6ff; }
+
+  table { width: 100%; border-collapse: collapse; }
+  tr:nth-child(even) { background: #1c2128; }
+  tr.hidden-row { display: none; }
+  td {
+    padding: 7px 14px;
+    font-size: clamp(0.78rem, 1.8vw, 0.86rem);
+    vertical-align: middle;
+    border-bottom: 1px solid #21262d;
+  }
+  td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    color: #1D9E75;
+    white-space: nowrap;
+    width: 44%;
+    font-weight: 600;
+  }
+  td:last-child { color: #c9d1d9; }
+
+  mark {
+    background: #e3b34155;
+    color: #e3b341;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  /* ── Header top ───────────────────────────────────────────────────────── */
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+  .header-top h1 { margin-bottom: 0; }
+
+  /* ── Branch button (easter egg) ───────────────────────────────────────── */
+  .branch-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid #30363d;
+    background: #21262d;
+    cursor: pointer;
+    font-size: 1.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    flex-shrink: 0;
+    transform-origin: center;
+    user-select: none;
+  }
+  .branch-btn:hover {
+    background: #1D9E7522;
+    border-color: #1D9E75;
+    transform: scale(1.08) rotate(-8deg);
+  }
+  @keyframes branch-explode {
+    0%   { transform: scale(1)   rotate(0deg);   opacity: 1; }
+    20%  { transform: scale(1.5) rotate(-15deg); opacity: 1; }
+    40%  { transform: scale(1.8) rotate(15deg);  opacity: 0.8; }
+    60%  { transform: scale(1.2) rotate(-10deg); opacity: 0.4; }
+    80%  { transform: scale(0.3) rotate(30deg);  opacity: 0.1; }
+    100% { transform: scale(0)   rotate(45deg);  opacity: 0; }
+  }
+  @keyframes branch-reappear {
+    0%   { transform: scale(0)   rotate(-20deg); opacity: 0; }
+    50%  { transform: scale(1.3) rotate(5deg);   opacity: 1; }
+    75%  { transform: scale(0.9) rotate(-3deg);  opacity: 1; }
+    100% { transform: scale(1)   rotate(0deg);   opacity: 1; }
+  }
+  .branch-btn.exploding   { animation: branch-explode  0.55s ease-in  forwards; }
+  .branch-btn.reappearing { animation: branch-reappear 0.45s ease-out forwards; }
+
+  /* ── Theme toggle ─────────────────────────────────────────────────────── */
+  .theme-toggle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid #30363d;
+    background: #21262d;
+    cursor: pointer;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .theme-toggle:hover {
+    background: #1D9E7522;
+    border-color: #1D9E75;
+    transform: scale(1.08);
+  }
+
+  /* ── Back to top ──────────────────────────────────────────────────────── */
+  .back-to-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1.5px solid #30363d;
+    background: #21262d;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s, border-color 0.2s;
+    z-index: 100;
+  }
+  .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .back-to-top:hover { background: #1D9E7522; border-color: #1D9E75; }
+  .back-to-top svg {
+    width: 18px; height: 18px;
+    stroke: #1D9E75;
+    stroke-width: 2.5; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 28px;
+    color: #484f58;
+    font-size: 0.8rem;
+    line-height: 2.2;
+  }
+
+  /* ── Light mode ───────────────────────────────────────────────────────── */
+  body.light { background: #ffffff; color: #24292f; }
+  body.light h1                        { color: #0d7a5a; }
+  body.light .subtitle                 { color: #57606a; }
+  body.light .tab                      { background: #f6f8fa; border-color: #d0d7de; color: #57606a; }
+  body.light .tab:hover                { border-color: #0d7a5a; color: #0d7a5a; }
+  body.light .tab.active               { border-color: #0d7a5a; color: #0d7a5a; background: #0d7a5a12; }
+  body.light .search-wrap input        { background: #f6f8fa; border-color: #0d7a5a88; color: #24292f; }
+  body.light .search-wrap input:focus  { border-color: #0d7a5a; box-shadow: 0 0 0 3px #0d7a5a33; }
+  body.light .search-wrap input::placeholder { color: #8c959f; }
+  body.light .search-icon              { color: #0d7a5a; }
+  body.light .search-count             { color: #57606a; }
+  body.light .search-count.no-results  { color: #cf222e; }
+  body.light .badge-gh                 { background: #8250df18; color: #8250df; border-color: #8250df55; }
+  body.light .card                     { background: #f6f8fa; border-color: #d0d7de; }
+  body.light .card-header              { background: #eaeef2; color: #0d7a5a; border-bottom-color: #d0d7de; }
+  body.light .card-header.green        { color: #116329; }
+  body.light .card-header.orange       { color: #bc4c00; }
+  body.light .card-header.purple       { color: #8250df; }
+  body.light .card-header.red          { color: #cf222e; }
+  body.light .card-header.yellow       { color: #9a6700; }
+  body.light .card-header.blue         { color: #0969da; }
+  body.light tr:nth-child(even)        { background: #edf0f3; }
+  body.light td                        { border-bottom-color: #eaeef2; }
+  body.light td:first-child            { color: #0d7a5a; }
+  body.light .card:has(.card-header.green)  td:first-child { color: #116329; }
+  body.light .card:has(.card-header.orange) td:first-child { color: #bc4c00; }
+  body.light .card:has(.card-header.purple) td:first-child { color: #8250df; }
+  body.light .card:has(.card-header.red)    td:first-child { color: #cf222e; }
+  body.light .card:has(.card-header.yellow) td:first-child { color: #9a6700; }
+  body.light .card:has(.card-header.blue)   td:first-child { color: #0969da; }
+  body.light td:last-child             { color: #24292f; }
+  body.light mark                      { background: #fff8c5; color: #9a6700; }
+  body.light footer                    { color: #8c959f; }
+  body.light footer a                  { color: #57606a !important; }
+  body.light .branch-btn               { background: #eaeef2; border-color: #d0d7de; }
+  body.light .branch-btn:hover         { background: #0d7a5a22; border-color: #0d7a5a; }
+  body.light .theme-toggle             { background: #eaeef2; border-color: #d0d7de; }
+  body.light .theme-toggle:hover       { background: #0d7a5a22; border-color: #0d7a5a; }
+  body.light .back-to-top              { background: #eaeef2; border-color: #d0d7de; }
+  body.light .back-to-top:hover        { background: #0d7a5a22; border-color: #0d7a5a; }
+  body.light .back-to-top svg          { stroke: #0d7a5a; }
+  body.light .search-clear             { color: #8c959f; }
+  body.light .search-clear:hover       { color: #24292f; }
+</style>
+</head>
+<body>
+
+<div class="header-top">
+  <button class="branch-btn" id="branchBtn" aria-label="🌿 Easter egg" title="Try clicking me…">🌿</button>
+  <h1>Git &amp; GitHub Cheatsheet</h1>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">☀️</button>
+</div>
+<p class="subtitle">Complete Git &amp; GitHub CLI command reference — searchable, fast, always free</p>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" data-tab="all">All</button>
+  <button class="tab" data-tab="git">Git</button>
+  <button class="tab" data-tab="gh">GitHub CLI</button>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <span class="search-icon">🔍</span>
+  <input type="text" id="search" placeholder="Type to filter commands…" autocomplete="off" spellcheck="false">
+  <button class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
+</div>
+<div class="search-count" id="count"></div>
+
+<div class="grid" id="grid">
+
+  <!-- ═══════════════════════ GIT SECTIONS ═══════════════════════ -->
+
+  <div class="card" data-tab="git">
+    <div class="card-header">Setup &amp; Config</div>
+    <table>
+      <tr><td>git config --global user.name</td><td>Set global username</td></tr>
+      <tr><td>git config --global user.email</td><td>Set global email</td></tr>
+      <tr><td>git config --list</td><td>Show all config values</td></tr>
+      <tr><td>git init</td><td>Initialize new repository</td></tr>
+      <tr><td>git clone &lt;url&gt;</td><td>Clone a remote repository</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="git">
+    <div class="card-header green">Daily Workflow</div>
+    <table>
+      <tr><td>git status</td><td>Show working tree status</td></tr>
+      <tr><td>git add &lt;file&gt;</td><td>Stage a specific file</td></tr>
+      <tr><td>git add .</td><td>Stage all changes</td></tr>
+      <tr><td>git commit -m "msg"</td><td>Commit with message</td></tr>
+      <tr><td>git commit --amend</td><td>Amend the last commit</td></tr>
+      <tr><td>git push</td><td>Push to remote</td></tr>
+      <tr><td>git pull</td><td>Fetch and merge from remote</td></tr>
+      <tr><td>git fetch</td><td>Fetch without merging</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="git">
+    <div class="card-header orange">Branching</div>
+    <table>
+      <tr><td>git branch</td><td>List all branches</td></tr>
+      <tr><td>git branch &lt;n&gt;</td><td>Create new branch</td></tr>
+      <tr><td>git switch &lt;branch&gt;</td><td>Switch to branch</td></tr>
+      <tr><td>git checkout -b &lt;n&gt;</td><td>Create &amp; switch to new branch</td></tr>
+      <tr><td>git merge &lt;branch&gt;</td><td>Merge branch into current</td></tr>
+      <tr><td>git rebase &lt;branch&gt;</td><td>Rebase onto branch</td></tr>
+      <tr><td>git branch -d &lt;n&gt;</td><td>Delete local branch</td></tr>
+      <tr><td>git push origin --delete &lt;b&gt;</td><td>Delete remote branch</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="git">
+    <div class="card-header blue">Diffs &amp; Logs</div>
+    <table>
+      <tr><td>git diff</td><td>Show unstaged changes</td></tr>
+      <tr><td>git diff --staged</td><td>Show staged changes</td></tr>
+      <tr><td>git log --oneline</td><td>Compact commit history</td></tr>
+      <tr><td>git log --oneline --graph</td><td>Visual branch graph</td></tr>
+      <tr><td>git show &lt;commit&gt;</td><td>Show commit details &amp; diff</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="git">
+    <div class="card-header red">Undoing Things</div>
+    <table>
+      <tr><td>git restore &lt;file&gt;</td><td>Discard working dir changes</td></tr>
+      <tr><td>git reset HEAD &lt;file&gt;</td><td>Unstage a file</td></tr>
+      <tr><td>git reset --soft HEAD~1</td><td>Undo commit, keep staged</td></tr>
+      <tr><td>git reset --hard HEAD~1</td><td>Undo commit &amp; discard changes</td></tr>
+      <tr><td>git revert &lt;commit&gt;</td><td>Create a revert commit</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="git">
+    <div class="card-header yellow">Stashing</div>
+    <table>
+      <tr><td>git stash</td><td>Stash current changes</td></tr>
+      <tr><td>git stash list</td><td>List all stashes</td></tr>
+      <tr><td>git stash pop</td><td>Apply &amp; remove latest stash</td></tr>
+      <tr><td>git stash drop</td><td>Discard latest stash</td></tr>
+      <tr><td>git stash apply stash@{n}</td><td>Apply a specific stash</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="git">
+    <div class="card-header purple">Remotes &amp; Tags</div>
+    <table>
+      <tr><td>git remote -v</td><td>List remotes with URLs</td></tr>
+      <tr><td>git remote add origin &lt;url&gt;</td><td>Add remote origin</td></tr>
+      <tr><td>git push -u origin &lt;branch&gt;</td><td>Push &amp; set upstream</td></tr>
+      <tr><td>git tag</td><td>List all tags</td></tr>
+      <tr><td>git tag v1.0</td><td>Create lightweight tag</td></tr>
+      <tr><td>git push origin --tags</td><td>Push all tags to remote</td></tr>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════ GITHUB CLI SECTIONS ═══════════════════════ -->
+
+  <div class="card" data-tab="gh">
+    <div class="card-header">Repos &amp; Auth <span class="badge badge-gh">gh cli</span></div>
+    <table>
+      <tr><td>gh auth login</td><td>Authenticate with GitHub</td></tr>
+      <tr><td>gh auth status</td><td>Show authentication status</td></tr>
+      <tr><td>gh repo create</td><td>Create a new repository</td></tr>
+      <tr><td>gh repo clone &lt;user/repo&gt;</td><td>Clone a repository</td></tr>
+      <tr><td>gh repo view</td><td>View repo info in browser</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="gh">
+    <div class="card-header green">Pull Requests <span class="badge badge-gh">gh cli</span></div>
+    <table>
+      <tr><td>gh pr create</td><td>Open a new pull request</td></tr>
+      <tr><td>gh pr list</td><td>List open pull requests</td></tr>
+      <tr><td>gh pr view</td><td>View current branch PR</td></tr>
+      <tr><td>gh pr merge</td><td>Merge a pull request</td></tr>
+      <tr><td>gh pr checkout &lt;number&gt;</td><td>Check out a PR locally</td></tr>
+      <tr><td>gh pr review --approve</td><td>Approve a pull request</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="gh">
+    <div class="card-header orange">Issues <span class="badge badge-gh">gh cli</span></div>
+    <table>
+      <tr><td>gh issue create</td><td>Create a new issue</td></tr>
+      <tr><td>gh issue list</td><td>List open issues</td></tr>
+      <tr><td>gh issue view &lt;number&gt;</td><td>View issue details</td></tr>
+      <tr><td>gh issue close &lt;number&gt;</td><td>Close an issue</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="gh">
+    <div class="card-header blue">Actions &amp; Releases <span class="badge badge-gh">gh cli</span></div>
+    <table>
+      <tr><td>gh run list</td><td>List recent workflow runs</td></tr>
+      <tr><td>gh run view &lt;id&gt;</td><td>View a workflow run</td></tr>
+      <tr><td>gh run watch</td><td>Watch a run in real-time</td></tr>
+      <tr><td>gh release create</td><td>Create a new release</td></tr>
+      <tr><td>gh release list</td><td>List all releases</td></tr>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  Git &amp; GitHub Cheatsheet · Complete command reference · Updated March 2026
+  <br>
+  <span style="font-size:1rem; color:#c9d1d9;">Also check out: <a href="https://neovimcheatsheet.com" target="_blank" rel="noopener" style="color:#c9d1d9;">Neovim Cheatsheet</a> · <a href="https://tmuxcheatsheet.org" target="_blank" rel="noopener" style="color:#c9d1d9;">Tmux Cheatsheet</a></span>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────────────────
+  let activeTab = 'all';
+  const searchInput = document.getElementById('search');
+  const searchClear = document.getElementById('searchClear');
+  const countEl     = document.getElementById('count');
+  const cards       = document.querySelectorAll('.card');
+  const tabBtns     = document.querySelectorAll('.tab');
+
+  // Store original cell text once at load
+  const originalCells = [];
+  cards.forEach(card => {
+    card.querySelectorAll('tr').forEach(row => {
+      const cells = row.querySelectorAll('td');
+      originalCells.push({
+        row, card,
+        texts: Array.from(cells).map(td => td.textContent)
+      });
+    });
+  });
+
+  function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function highlight(text, query) {
+    if (!query) return text;
+    const re = new RegExp(`(${escapeRegex(query)})`, 'gi');
+    return text.replace(re, '<mark>$1</mark>');
+  }
+
+  function applyFilters() {
+    const query = searchInput.value.trim().toLowerCase();
+    searchClear.classList.toggle('visible', searchInput.value.length > 0);
+
+    // Reset all state
+    originalCells.forEach(({ row }) => row.classList.remove('hidden-row'));
+    cards.forEach(c => { c.classList.remove('hidden'); });
+
+    // Restore original text (strip old highlights)
+    originalCells.forEach(({ row, texts }) => {
+      row.querySelectorAll('td').forEach((td, i) => { td.innerHTML = texts[i]; });
+    });
+
+    // Apply tab filter
+    cards.forEach(card => {
+      if (activeTab !== 'all' && card.dataset.tab !== activeTab) {
+        card.classList.add('tab-hidden');
+      } else {
+        card.classList.remove('tab-hidden');
+      }
+    });
+
+    let totalVisible = 0;
+
+    if (!query) {
+      // Count all non-tab-hidden rows
+      originalCells.forEach(({ card }) => {
+        if (!card.classList.contains('tab-hidden')) totalVisible++;
+      });
+      countEl.textContent = `${totalVisible} commands`;
+      countEl.className = 'search-count';
+      return;
+    }
+
+    // Apply search filter within active tab
+    originalCells.forEach(({ row, card, texts }) => {
+      if (card.classList.contains('tab-hidden')) return;
+      const combined = texts.join(' ').toLowerCase();
+      if (combined.includes(query)) {
+        totalVisible++;
+        const rawQuery = searchInput.value.trim();
+        row.querySelectorAll('td').forEach((td, i) => {
+          td.innerHTML = highlight(texts[i], rawQuery);
+        });
+      } else {
+        row.classList.add('hidden-row');
+      }
+    });
+
+    // Hide cards with no visible rows
+    cards.forEach(card => {
+      if (card.classList.contains('tab-hidden')) return;
+      if (card.querySelectorAll('tr:not(.hidden-row)').length === 0) {
+        card.classList.add('hidden');
+      }
+    });
+
+    if (totalVisible === 0) {
+      countEl.textContent = 'No matches found';
+      countEl.className = 'search-count no-results';
+    } else {
+      countEl.textContent = `${totalVisible} match${totalVisible !== 1 ? 'es' : ''} found`;
+      countEl.className = 'search-count';
+    }
+  }
+
+  // Tab clicks
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTab = btn.dataset.tab;
+      applyFilters();
+    });
+  });
+
+  // Search input
+  searchInput.addEventListener('input', applyFilters);
+
+  searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    applyFilters();
+    searchInput.focus();
+  });
+
+  // Initial count on load
+  applyFilters();
+</script>
+
+<script>
+  // ── Confetti easter egg ────────────────────────────────────────────────────
+  const branchBtn = document.getElementById('branchBtn');
+  let branchBusy = false;
+
+  branchBtn.addEventListener('click', () => {
+    if (branchBusy) return;
+    branchBusy = true;
+
+    const rect   = branchBtn.getBoundingClientRect();
+    const origin = {
+      x: (rect.left + rect.width  / 2) / window.innerWidth,
+      y: (rect.top  + rect.height / 2) / window.innerHeight,
+    };
+    const colors = ['#1D9E75', '#7ee787', '#d2a8ff', '#ffffff', '#e3b341', '#58a6ff'];
+
+    branchBtn.classList.add('exploding');
+
+    setTimeout(() => {
+      confetti({ particleCount: 140, spread: 360, startVelocity: 50, origin, colors, ticks: 220, scalar: 1.1 });
+    }, 180);
+    setTimeout(() => {
+      confetti({ particleCount: 70, spread: 200, startVelocity: 28, origin, colors, ticks: 180, scalar: 0.85 });
+    }, 320);
+    setTimeout(() => {
+      confetti({ particleCount: 40, spread: 120, startVelocity: 18,
+                 origin, colors: ['#1D9E75', '#7ee787', '#ffffff'], ticks: 120, scalar: 0.65 });
+    }, 480);
+
+    setTimeout(() => {
+      branchBtn.classList.remove('exploding');
+      branchBtn.classList.add('reappearing');
+      setTimeout(() => {
+        branchBtn.classList.remove('reappearing');
+        branchBusy = false;
+      }, 450);
+    }, 750);
+  });
+</script>
+
+<script>
+  // ── Back to top ────────────────────────────────────────────────────────────
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('visible', window.scrollY > 300);
+  }, { passive: true });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+<script>
+  // ── Theme toggle ───────────────────────────────────────────────────────────
+  const themeToggle  = document.getElementById('themeToggle');
+  const savedTheme   = localStorage.getItem('git-theme');
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+    document.body.classList.add('light');
+  }
+  document.documentElement.classList.remove('preload-light');
+
+  function updateIcon() {
+    themeToggle.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+  }
+  updateIcon();
+
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    localStorage.setItem('git-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+    updateIcon();
+  });
+</script>
+
+</body>
+</html>
