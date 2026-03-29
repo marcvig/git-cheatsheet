@@ -209,11 +209,11 @@
   .tooltip-hint {
     text-align: center;
     font-size: 0.72rem;
-    color: #484f58;
+    color: #8b949e;
     margin-top: -10px;
     margin-bottom: 18px;
   }
-  body.light .tooltip-hint { color: #8c959f; }
+  body.light .tooltip-hint { color: #57606a; }
 
   /* ── Badges ───────────────────────────────────────────────────────────── */
   .badge {
@@ -445,6 +445,7 @@
   body.light .search-clear:hover       { color: #24292f; }
 
   /* ── Hoverable rows ───────────────────────────────────────────────────── */
+  tr[data-tip] { cursor: pointer; }
   tr[data-tip]:hover td { background: rgba(29, 158, 117, 0.06); }
 
   /* ── Tooltip ──────────────────────────────────────────────────────────── */
@@ -994,6 +995,7 @@
   document.querySelectorAll('tr[data-tip]').forEach(row => {
     row.addEventListener('click', e => {
       if (tooltip.contains(e.target)) return;
+      e.stopPropagation();
       cancelClose();
       clearTimeout(showTimer);
       openTooltip(row);
