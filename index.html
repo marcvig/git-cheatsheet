@@ -326,6 +326,23 @@
     padding: 0 1px;
   }
 
+  /* ── Mobile responsive ────────────────────────────────────────────────── */
+  @media (max-width: 500px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    td {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+    td:first-child {
+      width: 48%;
+    }
+    .tooltip-hint {
+      font-size: 0.78rem;
+    }
+  }
+
   /* ── Header top ───────────────────────────────────────────────────────── */
   .header-top {
     display: flex;
@@ -964,8 +981,8 @@
   // ── Theme toggle ───────────────────────────────────────────────────────────
   const themeToggle  = document.getElementById('themeToggle');
   const savedTheme   = localStorage.getItem('git-theme');
-  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-  if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+  // Dark is always the default — only go light if user explicitly toggled it
+  if (savedTheme === 'light') {
     document.body.classList.add('light');
   }
   document.documentElement.classList.remove('preload-light');
