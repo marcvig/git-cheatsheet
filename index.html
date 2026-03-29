@@ -618,14 +618,17 @@
   const cards       = document.querySelectorAll('.card');
   const tabBtns     = document.querySelectorAll('.tab');
 
-  // Store original cell text once at load
+  // Store original cell content once at load
+  // htmls = raw innerHTML (preserves &lt;file&gt; etc.) for restoration
+  // texts = decoded textContent (e.g. "git add <file>") for searching
   const originalCells = [];
   cards.forEach(card => {
     card.querySelectorAll('tr').forEach(row => {
       const cells = row.querySelectorAll('td');
       originalCells.push({
         row, card,
-        texts: Array.from(cells).map(td => td.textContent)
+        htmls:  Array.from(cells).map(td => td.innerHTML),
+        texts:  Array.from(cells).map(td => td.textContent)
       });
     });
   });
@@ -634,10 +637,18 @@
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Highlight query within plain text, returning safe HTML
   function highlight(text, query) {
-    if (!query) return text;
+    if (!query) return escapeHtml(text);
     const re = new RegExp(`(${escapeRegex(query)})`, 'gi');
-    return text.replace(re, '<mark>$1</mark>');
+    const parts = text.split(re);
+    return parts.map((part, i) =>
+      i % 2 === 1 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part)
+    ).join('');
   }
 
   function applyFilters() {
@@ -648,9 +659,9 @@
     originalCells.forEach(({ row }) => row.classList.remove('hidden-row'));
     cards.forEach(c => { c.classList.remove('hidden'); });
 
-    // Restore original text (strip old highlights)
-    originalCells.forEach(({ row, texts }) => {
-      row.querySelectorAll('td').forEach((td, i) => { td.innerHTML = texts[i]; });
+    // Restore original HTML (strip old highlights)
+    originalCells.forEach(({ row, htmls }) => {
+      row.querySelectorAll('td').forEach((td, i) => { td.innerHTML = htmls[i]; });
     });
 
     // Apply tab filter
