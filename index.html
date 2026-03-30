@@ -822,8 +822,23 @@
 <footer>
   Git &amp; GitHub Cheatsheet · Complete command reference · Updated March 2026
   <br>
-  <span style="font-size:1rem; color:#c9d1d9;">Also check out: <a href="https://neovimcheatsheet.com" target="_blank" rel="noopener" style="color:#c9d1d9;">Neovim Cheatsheet</a> · <a href="https://tmuxcheatsheet.org" target="_blank" rel="noopener" style="color:#c9d1d9;">Tmux Cheatsheet</a> · <a href="https://linuxkernel.com" target="_blank" rel="noopener" style="color:#c9d1d9;">Linux Kernel</a></span>
+  <span id="sibling-links" style="font-size:1rem; color:#c9d1d9;"></span>
 </footer>
+<script>
+  const REGISTRY = 'https://cdn.jsdelivr.net/gh/marcvig/cheatsheet-registry@main/cheatsheets.json';
+  const CURRENT_DOMAIN = 'marcvig.github.io';
+  fetch(REGISTRY)
+    .then(r => r.json())
+    .then(sites => {
+      const others = sites.filter(s => s.domain !== CURRENT_DOMAIN);
+      if (!others.length) return;
+      const links = others.map(s =>
+        `<a href="${s.url}" target="_blank" rel="noopener" style="color:#c9d1d9;">${s.name}</a>`
+      ).join(' · ');
+      document.getElementById('sibling-links').innerHTML = 'Also check out: ' + links;
+    })
+    .catch(() => {});
+</script>
 
 <button class="back-to-top" id="backToTop" aria-label="Back to top">
   <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
