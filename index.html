@@ -315,6 +315,13 @@
     color: #1D9E75;
     width: 46%;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cmd-text {
+    flex: 1;
+    min-width: 0;
     word-break: break-word;
   }
   td:last-child { color: #c9d1d9; }
@@ -600,11 +607,9 @@
 
   /* ── Danger badge ─────────────────────────────────────────────────────── */
   .danger-badge {
-    display: inline-block;
-    margin-left: 6px;
-    font-size: 0.72rem;
+    flex-shrink: 0;
+    font-size: 1.4em;
     color: #f0883e;
-    vertical-align: middle;
     line-height: 1;
   }
   .tooltip-danger {
@@ -852,11 +857,12 @@
     const cmdCell = row.querySelector('td:first-child');
     if (!cmdCell) return;
     // Wrap &lt;placeholder&gt; in amber italic span
-    let styled = htmls[0].replace(/&lt;([^&]+)&gt;/g,
+    let inner = htmls[0].replace(/&lt;([^&]+)&gt;/g,
       '<span class="placeholder">&lt;$1&gt;</span>');
-    // Append danger badge if row is flagged
+    // Wrap text in cmd-text (flex: 1) so badge stays end-aligned & vertically centered
+    let styled = `<span class="cmd-text">${inner}</span>`;
     if (row.dataset.danger) {
-      styled += ' <span class="danger-badge" title="Destructive command">⚠</span>';
+      styled += '<span class="danger-badge" title="Destructive command">⚠</span>';
     }
     cmdCell.innerHTML = styled;
     htmls[0] = styled; // keep stored html in sync for search restore
