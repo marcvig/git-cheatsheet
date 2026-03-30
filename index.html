@@ -597,6 +597,33 @@
   body.light .tooltip-copy          { background: #0d7a5a12; border-color: #0d7a5a44; color: #0d7a5a; }
   body.light .tooltip-copy:hover    { background: #0d7a5a22; }
   body.light .tooltip-copy.copied   { color: #116329; border-color: #11632955; background: #11632912; }
+
+  /* ── Danger badge ─────────────────────────────────────────────────────── */
+  .danger-badge {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 0.72rem;
+    color: #f0883e;
+    vertical-align: middle;
+    line-height: 1;
+  }
+  .tooltip-danger {
+    background: rgba(248, 81, 73, 0.08);
+    border: 1px solid rgba(248, 81, 73, 0.3);
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    color: #f85149;
+    font-size: 0.78rem;
+    display: none;
+    align-items: center;
+    gap: 6px;
+  }
+  body.light .tooltip-danger { background: rgba(207,34,46,0.06); border-color: rgba(207,34,46,0.25); color: #cf222e; }
+
+  /* ── Placeholder args ─────────────────────────────────────────────────── */
+  .placeholder { color: #e3b341; font-style: italic; }
+  body.light .placeholder { color: #9a6700; }
 </style>
 </head>
 <body>
@@ -604,6 +631,7 @@
 <!-- Tooltip -->
 <div id="tooltip" class="tooltip" role="tooltip">
   <button class="tooltip-close" id="tooltipClose" aria-label="Close">✕</button>
+  <div class="tooltip-danger" id="tooltipDanger"></div>
   <div class="tooltip-cmd" id="tooltipCmd"></div>
   <div class="tooltip-desc" id="tooltipDesc"></div>
   <div class="tooltip-example-label">Example</div>
@@ -704,10 +732,10 @@
   <div class="card" data-tab="git">
     <div class="card-header red">Undoing Things</div>
     <table>
-      <tr data-tip="Discards all uncommitted changes in the file, restoring it to the state of the last commit" data-example="git restore index.html"><td>git restore &lt;file&gt;</td><td>Discard working dir changes</td></tr>
+      <tr data-tip="Discards all uncommitted changes in the file, restoring it to the state of the last commit" data-example="git restore index.html" data-danger="Destructive — permanently discards all uncommitted changes in this file"><td>git restore &lt;file&gt;</td><td>Discard working dir changes</td></tr>
       <tr data-tip="Removes the file from the staging area while keeping your edits in the working directory" data-example="git reset HEAD README.md"><td>git reset HEAD &lt;file&gt;</td><td>Unstage a file</td></tr>
       <tr data-tip="Moves HEAD back one commit but keeps all its changes staged and ready to re-commit" data-example="git reset --soft HEAD~1"><td>git reset --soft HEAD~1</td><td>Undo commit, keep staged</td></tr>
-      <tr data-tip="Permanently discards the last commit and all its changes — use with caution, cannot be easily undone" data-example="git reset --hard HEAD~1"><td>git reset --hard HEAD~1</td><td>Undo commit &amp; discard changes</td></tr>
+      <tr data-tip="Permanently discards the last commit and all its changes — use with caution, cannot be easily undone" data-example="git reset --hard HEAD~1" data-danger="Destructive — permanently discards your commit and all its changes, cannot be undone"><td>git reset --hard HEAD~1</td><td>Undo commit &amp; discard changes</td></tr>
       <tr data-tip="Creates a new commit that undoes a previous one, preserving full history — safe for shared branches" data-example="git revert a3f5c2d"><td>git revert &lt;commit&gt;</td><td>Create a revert commit</td></tr>
     </table>
   </div>
@@ -718,7 +746,7 @@
       <tr data-tip="Saves uncommitted changes to a temporary stack so you can switch branches with a clean working directory" data-example="git stash"><td>git stash</td><td>Stash current changes</td></tr>
       <tr data-tip="Shows all saved stashes with index numbers, e.g. stash@{0}, and the branch they were saved on" data-example="git stash list"><td>git stash list</td><td>List all stashes</td></tr>
       <tr data-tip="Applies the most recent stash to your working directory and removes it from the stash stack" data-example="git stash pop"><td>git stash pop</td><td>Apply &amp; remove latest stash</td></tr>
-      <tr data-tip="Permanently deletes a stash from the list; removes the most recent one if no stash is specified" data-example="git stash drop"><td>git stash drop</td><td>Discard a stash (latest by default)</td></tr>
+      <tr data-tip="Permanently deletes a stash from the list; removes the most recent one if no stash is specified" data-example="git stash drop" data-danger="Destructive — permanently deletes the stash entry, cannot be recovered"><td>git stash drop</td><td>Discard a stash (latest by default)</td></tr>
       <tr data-tip="Applies a specific stash by index without removing it from the stack, useful for reusing a stash" data-example="git stash apply stash@{2}"><td>git stash apply stash@{n}</td><td>Apply a specific stash</td></tr>
     </table>
   </div>
@@ -817,6 +845,21 @@
         texts:  Array.from(cells).map(td => td.textContent)
       });
     });
+  });
+
+  // Post-process command cells: style <placeholder> args + add danger badges
+  originalCells.forEach(({row, htmls}) => {
+    const cmdCell = row.querySelector('td:first-child');
+    if (!cmdCell) return;
+    // Wrap &lt;placeholder&gt; in amber italic span
+    let styled = htmls[0].replace(/&lt;([^&]+)&gt;/g,
+      '<span class="placeholder">&lt;$1&gt;</span>');
+    // Append danger badge if row is flagged
+    if (row.dataset.danger) {
+      styled += ' <span class="danger-badge" title="Destructive command">⚠</span>';
+    }
+    cmdCell.innerHTML = styled;
+    htmls[0] = styled; // keep stored html in sync for search restore
   });
 
   function escapeRegex(str) {
@@ -1019,7 +1062,16 @@
   let hideTimer = null;
   let tipVisible = false;
 
+  const tooltipDanger = document.getElementById('tooltipDanger');
+
   function openTooltip(row) {
+    // Danger banner
+    if (row.dataset.danger) {
+      tooltipDanger.textContent = '⚠ ' + row.dataset.danger;
+      tooltipDanger.style.display = 'flex';
+    } else {
+      tooltipDanger.style.display = 'none';
+    }
     tooltipCmd.textContent  = row.querySelector('td:first-child').textContent;
     tooltipDesc.textContent = row.dataset.tip;
     tooltipCode.textContent = row.dataset.example;
