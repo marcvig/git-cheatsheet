@@ -315,6 +315,9 @@
     color: #1D9E75;
     width: 46%;
     font-weight: 600;
+    word-break: break-word;
+  }
+  .cmd-inner {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -859,10 +862,12 @@
     // Wrap &lt;placeholder&gt; in amber italic span
     let inner = htmls[0].replace(/&lt;([^&]+)&gt;/g,
       '<span class="placeholder">&lt;$1&gt;</span>');
-    // Wrap text in cmd-text (flex: 1) so badge stays end-aligned & vertically centered
-    let styled = `<span class="cmd-text">${inner}</span>`;
+    // Wrap in cmd-inner div (flex) so badge stays end-aligned & vertically centered
+    let styled;
     if (row.dataset.danger) {
-      styled += '<span class="danger-badge" title="Destructive command">⚠</span>';
+      styled = `<div class="cmd-inner"><span class="cmd-text">${inner}</span><span class="danger-badge" title="Destructive command">⚠</span></div>`;
+    } else {
+      styled = inner;
     }
     cmdCell.innerHTML = styled;
     htmls[0] = styled; // keep stored html in sync for search restore
