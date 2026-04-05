@@ -684,7 +684,7 @@
     <input type="checkbox" id="tooltipToggle" checked>
     <span class="toggle-track"><span class="toggle-thumb"></span></span>
   </label>
-  Click or hover any command for a longer description &amp; example
+  Enable tooltip popup on hover over command
 </p>
 
 <div class="grid" id="grid">
@@ -1091,12 +1091,12 @@
   const tipsEnabled = () => tooltipToggle.checked;
 
   tooltipToggle.addEventListener('change', () => {
-    if (!tooltipToggle.checked) closeTooltip();
+    if (!tooltipToggle.checked && tipOpenedByHover) closeTooltip();
   });
 
   let showTimer = null;
   let hideTimer = null;
-  let tipVisible = false;
+  let tipVisible = false, tipOpenedByHover = false;
 
   const tooltipDanger = document.getElementById('tooltipDanger');
 
@@ -1115,6 +1115,7 @@
     tooltipCopy.classList.remove('copied');
     tooltip.classList.add('visible');
     tipVisible = true;
+    tipOpenedByHover = false; // will be set to true by mouseenter if applicable
 
     // Position after render so offsetWidth/Height are available
     requestAnimationFrame(() => {
@@ -1135,6 +1136,7 @@
   function closeTooltip() {
     tooltip.classList.remove('visible');
     tipVisible = false;
+    tipOpenedByHover = false;
   }
 
   function scheduleClose() {
@@ -1147,7 +1149,7 @@
 
   document.querySelectorAll('tr[data-tip]').forEach(row => {
     row.addEventListener('click', e => {
-      if (!tipsEnabled() || tooltip.contains(e.target)) return;
+      if (tooltip.contains(e.target)) return;
       e.stopPropagation();
       cancelClose();
       clearTimeout(showTimer);
@@ -1157,7 +1159,7 @@
       cancelClose();
       clearTimeout(showTimer);
       if (!tipsEnabled()) return;
-      showTimer = setTimeout(() => openTooltip(row), 2000);
+      showTimer = setTimeout(() => { tipOpenedByHover = true; openTooltip(row); }, 2000);
     });
     row.addEventListener('mouseleave', e => {
       clearTimeout(showTimer);
