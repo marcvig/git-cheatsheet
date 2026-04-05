@@ -1096,7 +1096,7 @@
 
   let showTimer = null;
   let hideTimer = null;
-  let tipVisible = false, tipOpenedByHover = false;
+  let tipVisible = false, tipOpenedByHover = false, activeRow = null, autoCloseTimer = null;
 
   const tooltipDanger = document.getElementById('tooltipDanger');
 
@@ -1115,6 +1115,7 @@
     tooltipCopy.classList.remove('copied');
     tooltip.classList.add('visible');
     tipVisible = true;
+    activeRow = row;
     tipOpenedByHover = false; // will be set to true by mouseenter if applicable
 
     // Position after render so offsetWidth/Height are available
@@ -1134,13 +1135,15 @@
   }
 
   function closeTooltip() {
+    clearTimeout(autoCloseTimer);
     tooltip.classList.remove('visible');
     tipVisible = false;
     tipOpenedByHover = false;
+    activeRow = null;
   }
 
   function scheduleClose() {
-    hideTimer = setTimeout(closeTooltip, 120);
+    hideTimer = setTimeout(closeTooltip, 6000);
   }
 
   function cancelClose() {
@@ -1153,6 +1156,7 @@
       e.stopPropagation();
       cancelClose();
       clearTimeout(showTimer);
+      if (tipVisible && activeRow === row) { closeTooltip(); return; }
       openTooltip(row);
     });
     row.addEventListener('mouseenter', () => {
@@ -1167,7 +1171,7 @@
     });
   });
 
-  tooltip.addEventListener('mouseenter', cancelClose);
+  tooltip.addEventListener('mouseenter', () => { cancelClose(); clearTimeout(autoCloseTimer); });
   tooltip.addEventListener('mouseleave', e => {
     if (!e.relatedTarget || !e.relatedTarget.closest('tr[data-tip]')) scheduleClose();
   });
