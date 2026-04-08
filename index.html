@@ -97,7 +97,8 @@
      ============================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap"></noscript>
 
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -854,7 +855,7 @@
   <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<script src="/confetti.browser.min.js"></script>
+<script src="/confetti.browser.min.js" defer></script>
 
 <script>
   // ── State ──────────────────────────────────────────────────────────────────
@@ -1007,6 +1008,7 @@
 
 <script>
   // ── Confetti easter egg ────────────────────────────────────────────────────
+  window.addEventListener('load', function() {
   const branchBtn = document.getElementById('branchBtn');
   let branchBusy = false;
 
@@ -1043,6 +1045,7 @@
       }, 450);
     }, 750);
   });
+  }); // end load
 </script>
 
 <script>
