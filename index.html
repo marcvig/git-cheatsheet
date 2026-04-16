@@ -736,6 +736,17 @@
   </div>
 
   <div class="card" data-tab="git">
+    <div class="card-header green">Worktrees</div>
+    <table>
+      <tr data-tip="Creates a new working directory linked to the repo with the specified branch checked out — lets you work on two branches simultaneously without stashing" data-example="git worktree add ../hotfix origin/hotfix"><td>git worktree add &lt;path&gt; &lt;branch&gt;</td><td>Check out a branch in a new directory</td></tr>
+      <tr data-tip="Creates a new branch and checks it out in a new directory in one step — ideal for starting a feature or hotfix while keeping your current work untouched" data-example="git worktree add -b hotfix-123 ../hotfix main"><td>git worktree add -b &lt;branch&gt; &lt;path&gt;</td><td>Create new branch in new directory</td></tr>
+      <tr data-tip="Lists all worktrees for the repo including the main one, showing their paths, HEAD commits, and branches" data-example="git worktree list"><td>git worktree list</td><td>List all linked worktrees</td></tr>
+      <tr data-tip="Deletes the worktree directory and removes it from Git's tracking — the branch itself is not deleted" data-example="git worktree remove ../hotfix"><td>git worktree remove &lt;path&gt;</td><td>Remove a worktree</td></tr>
+      <tr data-tip="Removes stale worktree entries left behind when directories were manually deleted rather than via git worktree remove" data-example="git worktree prune"><td>git worktree prune</td><td>Clean up stale worktree references</td></tr>
+    </table>
+  </div>
+
+  <div class="card" data-tab="git">
     <div class="card-header blue">Diffs &amp; Logs</div>
     <table>
       <tr data-tip="Shows line-by-line changes in your working directory that have not been staged yet" data-example="git diff"><td>git diff</td><td>Show unstaged changes</td></tr>
