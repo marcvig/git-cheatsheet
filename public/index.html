@@ -312,7 +312,7 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: #1D9E75;
+    color: #1EA876; /* a11y: was #1D9E75 (4.49:1 on #21262d, < 4.5 AA); now 5.01:1 */
     border-bottom: 1px solid #30363d;
     display: flex;
     align-items: center;
@@ -479,7 +479,7 @@
   footer {
     text-align: center;
     margin-top: 28px;
-    color: #484f58;
+    color: #767e88; /* a11y: was #484f58 (2.28:1 on #0d1117, fails AA); now 4.61:1. Scoped here only — shared token at placeholder/search-clear/tooltip-close intentionally left (separate audit) */
     font-size: 0.8rem;
     line-height: 2.2;
   }
@@ -520,7 +520,7 @@
   body.light .card:has(.card-header.blue)   td:first-child { color: #0969da; }
   body.light td:last-child             { color: #24292f; }
   body.light mark                      { background: #fff8c5; color: #9a6700; }
-  body.light footer                    { color: #8c959f; }
+  body.light footer                    { color: #6e7781; } /* a11y: was #8c959f (3.04:1 on #fff, fails AA); now 4.55:1 */
   body.light footer a                  { color: #57606a !important; }
   body.light .branch-btn               { background: #eaeef2; border-color: #d0d7de; color: #0d7a5a; }
   body.light .branch-btn:hover         { background: #0d7a5a22; border-color: #0d7a5a; }
@@ -658,6 +658,16 @@
   /* ── Placeholder args ─────────────────────────────────────────────────── */
   .placeholder { color: #e3b341; font-style: italic; }
   body.light .placeholder { color: #9a6700; }
+
+  /* ── Focus visibility (WCAG 2.4.7 / 2.4.11) ──────────────────────────── */
+  /* Accent #1D9E75 clears 3:1 on every background a focusable element sits on:
+     dark body #0d1117 (5.59), dark card #161b22 (5.11), tooltip #1c2128 (4.78),
+     light body #fff (3.39), light card #f6f8fa (3.18). No input included — the
+     search input already has a custom box-shadow focus ring (lines 188-190/498). */
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid #1D9E75;
+    outline-offset: 2px;
+  }
 </style>
 </head>
 <body>
