@@ -10,7 +10,7 @@ An interactive, searchable Git and GitHub command reference: everyday commands, 
 - Click any command for a description and example
 - Click-to-copy on commands
 - Light and dark mode
-- No tracking, no logins, no telemetry
+- No logins, no ads
 
 ## Contributing
 
