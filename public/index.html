@@ -22,7 +22,7 @@
 <!-- ============================================================
      PRIMARY META
      ============================================================ -->
-<title>Git &amp; GitHub Cheatsheet — Complete Git Command Reference</title>
+<title>Git &amp; GitHub Cheatsheet - Complete Git Command Reference</title>
 <meta name="description" content="A fast, searchable Git and GitHub CLI cheatsheet covering every essential command: setup, branching, commits, diffs, stashing, remotes, pull requests, issues, actions, and releases.">
 <meta name="keywords" content="git cheatsheet, github cli cheatsheet, git commands, gh cli, git reference, git branch, git commit, git stash, git merge, git rebase, github pull request, git tutorial, git guide">
 <meta name="author" content="marc-bfa">
@@ -39,23 +39,23 @@
      ============================================================ -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Git &amp; GitHub Cheatsheet">
-<meta property="og:title" content="Git &amp; GitHub Cheatsheet — Complete Git Command Reference">
+<meta property="og:title" content="Git &amp; GitHub Cheatsheet - Complete Git Command Reference">
 <meta property="og:description" content="A fast, searchable Git and GitHub CLI cheatsheet covering every essential command: setup, branching, commits, diffs, stashing, remotes, pull requests, issues, actions, and releases.">
 <meta property="og:url" content="https://gitcheatsheets.org/">
 <meta property="og:image" content="https://gitcheatsheets.org/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Git &amp; GitHub Cheatsheet — searchable command reference">
+<meta property="og:image:alt" content="Git &amp; GitHub Cheatsheet - searchable command reference">
 <meta property="og:locale" content="en_US">
 
 <!-- ============================================================
      TWITTER / X CARD
      ============================================================ -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Git &amp; GitHub Cheatsheet — Complete Git Command Reference">
+<meta name="twitter:title" content="Git &amp; GitHub Cheatsheet - Complete Git Command Reference">
 <meta name="twitter:description" content="A fast, searchable Git and GitHub CLI cheatsheet covering every essential command: setup, branching, commits, diffs, stashing, remotes, pull requests, issues, actions, and releases.">
 <meta name="twitter:image" content="https://gitcheatsheets.org/og-image.png">
-<meta name="twitter:image:alt" content="Git &amp; GitHub Cheatsheet — searchable command reference">
+<meta name="twitter:image:alt" content="Git &amp; GitHub Cheatsheet - searchable command reference">
 
 <!-- ============================================================
      JSON-LD STRUCTURED DATA
@@ -64,7 +64,7 @@
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "name": "Git & GitHub Cheatsheet — Complete Git Command Reference",
+  "name": "Git & GitHub Cheatsheet - Complete Git Command Reference",
   "description": "A fast, searchable Git and GitHub CLI cheatsheet covering every essential command: setup, branching, commits, diffs, stashing, remotes, pull requests, issues, actions, and releases.",
   "url": "https://gitcheatsheets.org/",
   "inLanguage": "en-US",
@@ -91,7 +91,7 @@
     }
   },
   "image": "https://gitcheatsheets.org/og-image.png",
-  "headline": "Git & GitHub Cheatsheet — Complete Git Command Reference"
+  "headline": "Git & GitHub Cheatsheet - Complete Git Command Reference"
 }
     </script>
 
@@ -479,7 +479,7 @@
   footer {
     text-align: center;
     margin-top: 28px;
-    color: #767e88; /* a11y: was #484f58 (2.28:1 on #0d1117, fails AA); now 4.61:1. Scoped here only — shared token at placeholder/search-clear/tooltip-close intentionally left (separate audit) */
+    color: #767e88; /* a11y: was #484f58 (2.28:1 on #0d1117, fails AA); now 4.61:1. Scoped here only - shared token at placeholder/search-clear/tooltip-close intentionally left (separate audit) */
     font-size: 0.8rem;
     line-height: 2.2;
   }
@@ -662,7 +662,7 @@
   /* ── Focus visibility (WCAG 2.4.7 / 2.4.11) ──────────────────────────── */
   /* Accent #1D9E75 clears 3:1 on every background a focusable element sits on:
      dark body #0d1117 (5.59), dark card #161b22 (5.11), tooltip #1c2128 (4.78),
-     light body #fff (3.39), light card #f6f8fa (3.18). No input included — the
+     light body #fff (3.39), light card #f6f8fa (3.18). No input included - the
      search input already has a custom box-shadow focus ring (lines 188-190/498). */
   a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
     outline: 2px solid #1D9E75;
@@ -769,11 +769,11 @@
 </div>
 
 <div class="header-top">
-  <button class="branch-btn" id="branchBtn" aria-label="Git branch — click for confetti" title="Try clicking me…"><svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="10" cy="8" r="3"/><circle cx="10" cy="24" r="3"/><circle cx="22" cy="13" r="3"/><line x1="10" y1="11" x2="10" y2="21" stroke-linecap="round"/><path d="M10 11 Q10 13 22 13" stroke-linecap="round"/></svg></button>
+  <button class="branch-btn" id="branchBtn" aria-label="Git branch - click for confetti" title="Try clicking me…"><svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="10" cy="8" r="3"/><circle cx="10" cy="24" r="3"/><circle cx="22" cy="13" r="3"/><line x1="10" y1="11" x2="10" y2="21" stroke-linecap="round"/><path d="M10 11 Q10 13 22 13" stroke-linecap="round"/></svg></button>
   <h1>Git &amp; GitHub Cheatsheet</h1>
   <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">☀️</button>
 </div>
-<p class="subtitle">Complete Git &amp; GitHub CLI command reference — searchable, fast, always free</p>
+<p class="subtitle">Complete Git &amp; GitHub CLI command reference - searchable, fast, always free</p>
 
 <!-- TABS -->
 <div class="tabs">
@@ -818,12 +818,12 @@
       <tr data-tip="Shows which files are staged, modified, or untracked since the last commit" data-example="git status"><td>git status</td><td>Show working tree status</td></tr>
       <tr data-tip="Moves the named file to the staging area to be included in the next commit" data-example="git add README.md"><td>git add &lt;file&gt;</td><td>Stage a specific file</td></tr>
       <tr data-tip="Stages all new, modified, and deleted files in the current directory recursively" data-example="git add ."><td>git add .</td><td>Stage all changes in current directory</td></tr>
-      <tr data-tip="Interactively choose which chunks of changes to stage — great for splitting one file across multiple commits" data-example="git add -p"><td>git add -p</td><td>Interactively stage chunks</td></tr>
+      <tr data-tip="Interactively choose which chunks of changes to stage - great for splitting one file across multiple commits" data-example="git add -p"><td>git add -p</td><td>Interactively stage chunks</td></tr>
       <tr data-tip="Saves all staged changes as a new commit with your message describing what changed" data-example="git commit -m &quot;Fix null pointer in login&quot;"><td>git commit -m "msg"</td><td>Commit with message</td></tr>
       <tr data-tip="Stages all tracked file changes and commits in one step; does not include untracked new files" data-example="git commit -am &quot;Update nav styles&quot;"><td>git commit -am "msg"</td><td>Commit all tracked changes</td></tr>
-      <tr data-tip="Rewrites the last commit — edit its message or add forgotten staged changes before pushing" data-example="git commit --amend"><td>git commit --amend</td><td>Amend the last commit</td></tr>
+      <tr data-tip="Rewrites the last commit - edit its message or add forgotten staged changes before pushing" data-example="git commit --amend"><td>git commit --amend</td><td>Amend the last commit</td></tr>
       <tr data-tip="Uploads your local branch commits to its configured upstream remote branch" data-example="git push"><td>git push</td><td>Push current branch to its upstream</td></tr>
-      <tr data-tip="Fetches changes from the remote and integrates them — merges by default, or rebases if configured" data-example="git pull"><td>git pull</td><td>Fetch and integrate changes (merge or rebase)</td></tr>
+      <tr data-tip="Fetches changes from the remote and integrates them - merges by default, or rebases if configured" data-example="git pull"><td>git pull</td><td>Fetch and integrate changes (merge or rebase)</td></tr>
       <tr data-tip="Downloads remote changes into tracking branches without touching your working directory" data-example="git fetch origin"><td>git fetch</td><td>Fetch without merging</td></tr>
     </table>
   </div>
@@ -834,10 +834,10 @@
       <tr data-tip="Lists all local branches with an asterisk marking the one you are currently on" data-example="git branch"><td>git branch</td><td>List all branches</td></tr>
       <tr data-tip="Creates a new branch pointing to the current commit without switching to it" data-example="git branch feature/user-auth"><td>git branch &lt;name&gt;</td><td>Create new branch</td></tr>
       <tr data-tip="Switches your working directory to the named branch, updating all tracked files" data-example="git switch main"><td>git switch &lt;branch&gt;</td><td>Switch to branch</td></tr>
-      <tr data-tip="Creates a new branch and immediately switches to it — shorthand for branch + switch" data-example="git checkout -b feature/login"><td>git checkout -b &lt;name&gt;</td><td>Create &amp; switch to new branch</td></tr>
+      <tr data-tip="Creates a new branch and immediately switches to it - shorthand for branch + switch" data-example="git checkout -b feature/login"><td>git checkout -b &lt;name&gt;</td><td>Create &amp; switch to new branch</td></tr>
       <tr data-tip="Joins the history of the specified branch into your current branch, creating a merge commit if needed" data-example="git merge feature/user-auth"><td>git merge &lt;branch&gt;</td><td>Merge branch into current</td></tr>
       <tr data-tip="Replays your current branch commits on top of the target branch for a clean linear history" data-example="git rebase main"><td>git rebase &lt;branch&gt;</td><td>Rebase onto branch</td></tr>
-      <tr data-tip="Applies the changes from a specific commit onto your current branch — useful for backporting fixes" data-example="git cherry-pick a3f5c2d"><td>git cherry-pick &lt;commit&gt;</td><td>Apply a specific commit</td></tr>
+      <tr data-tip="Applies the changes from a specific commit onto your current branch - useful for backporting fixes" data-example="git cherry-pick a3f5c2d"><td>git cherry-pick &lt;commit&gt;</td><td>Apply a specific commit</td></tr>
       <tr data-tip="Deletes a fully merged branch; use -D to force-delete an unmerged one" data-example="git branch -d feature/user-auth"><td>git branch -d &lt;name&gt;</td><td>Delete local branch</td></tr>
       <tr data-tip="Removes the named branch from the remote repository so teammates no longer see it" data-example="git push origin --delete feature/user-auth"><td>git push origin --delete &lt;name&gt;</td><td>Delete remote branch</td></tr>
     </table>
@@ -846,10 +846,10 @@
   <div class="card" data-tab="git">
     <div class="card-header green">Worktrees</div>
     <table>
-      <tr data-tip="Creates a new working directory linked to the repo with the specified branch checked out — lets you work on two branches simultaneously without stashing" data-example="git worktree add ../hotfix origin/hotfix"><td>git worktree add &lt;path&gt; &lt;branch&gt;</td><td>Check out a branch in a new directory</td></tr>
-      <tr data-tip="Creates a new branch and checks it out in a new directory in one step — ideal for starting a feature or hotfix while keeping your current work untouched" data-example="git worktree add -b hotfix-123 ../hotfix main"><td>git worktree add -b &lt;branch&gt; &lt;path&gt;</td><td>Create new branch in new directory</td></tr>
+      <tr data-tip="Creates a new working directory linked to the repo with the specified branch checked out - lets you work on two branches simultaneously without stashing" data-example="git worktree add ../hotfix origin/hotfix"><td>git worktree add &lt;path&gt; &lt;branch&gt;</td><td>Check out a branch in a new directory</td></tr>
+      <tr data-tip="Creates a new branch and checks it out in a new directory in one step - ideal for starting a feature or hotfix while keeping your current work untouched" data-example="git worktree add -b hotfix-123 ../hotfix main"><td>git worktree add -b &lt;branch&gt; &lt;path&gt;</td><td>Create new branch in new directory</td></tr>
       <tr data-tip="Lists all worktrees for the repo including the main one, showing their paths, HEAD commits, and branches" data-example="git worktree list"><td>git worktree list</td><td>List all linked worktrees</td></tr>
-      <tr data-tip="Deletes the worktree directory and removes it from Git's tracking — the branch itself is not deleted" data-example="git worktree remove ../hotfix"><td>git worktree remove &lt;path&gt;</td><td>Remove a worktree</td></tr>
+      <tr data-tip="Deletes the worktree directory and removes it from Git's tracking - the branch itself is not deleted" data-example="git worktree remove ../hotfix"><td>git worktree remove &lt;path&gt;</td><td>Remove a worktree</td></tr>
       <tr data-tip="Removes stale worktree entries left behind when directories were manually deleted rather than via git worktree remove" data-example="git worktree prune"><td>git worktree prune</td><td>Clean up stale worktree references</td></tr>
     </table>
   </div>
@@ -863,18 +863,18 @@
       <tr data-tip="Draws an ASCII graph of all branches with ref labels and tags alongside the commit history" data-example="git log --oneline --graph --decorate --all"><td>git log --oneline --graph --decorate --all</td><td>Visual branch graph (all branches)</td></tr>
       <tr data-tip="Displays full metadata and diff for a specific commit; defaults to HEAD when no commit is given" data-example="git show a3f5c2d"><td>git show &lt;commit&gt;</td><td>Show commit details &amp; diff</td></tr>
       <tr data-tip="Annotates every line of a file with the commit hash, author, and date of its last change" data-example="git blame src/app.js"><td>git blame &lt;file&gt;</td><td>Show who changed each line</td></tr>
-      <tr data-tip="Records every movement of HEAD including resets and rebases — your safety net for recovering lost commits" data-example="git reflog"><td>git reflog</td><td>Show full HEAD history</td></tr>
+      <tr data-tip="Records every movement of HEAD including resets and rebases - your safety net for recovering lost commits" data-example="git reflog"><td>git reflog</td><td>Show full HEAD history</td></tr>
     </table>
   </div>
 
   <div class="card" data-tab="git">
     <div class="card-header red">Undoing Things</div>
     <table>
-      <tr data-tip="Discards all uncommitted changes in the file, restoring it to the state of the last commit" data-example="git restore index.html" data-danger="Destructive — permanently discards all uncommitted changes in this file"><td>git restore &lt;file&gt;</td><td>Discard working dir changes</td></tr>
+      <tr data-tip="Discards all uncommitted changes in the file, restoring it to the state of the last commit" data-example="git restore index.html" data-danger="Destructive - permanently discards all uncommitted changes in this file"><td>git restore &lt;file&gt;</td><td>Discard working dir changes</td></tr>
       <tr data-tip="Removes the file from the staging area while keeping your edits in the working directory" data-example="git reset HEAD README.md"><td>git reset HEAD &lt;file&gt;</td><td>Unstage a file</td></tr>
       <tr data-tip="Moves HEAD back one commit but keeps all its changes staged and ready to re-commit" data-example="git reset --soft HEAD~1"><td>git reset --soft HEAD~1</td><td>Undo commit, keep staged</td></tr>
-      <tr data-tip="Permanently discards the last commit and all its changes — use with caution, cannot be easily undone" data-example="git reset --hard HEAD~1" data-danger="Destructive — permanently discards your commit and all its changes, cannot be undone"><td>git reset --hard HEAD~1</td><td>Undo commit &amp; discard changes</td></tr>
-      <tr data-tip="Creates a new commit that undoes a previous one, preserving full history — safe for shared branches" data-example="git revert a3f5c2d"><td>git revert &lt;commit&gt;</td><td>Create a revert commit</td></tr>
+      <tr data-tip="Permanently discards the last commit and all its changes - use with caution, cannot be easily undone" data-example="git reset --hard HEAD~1" data-danger="Destructive - permanently discards your commit and all its changes, cannot be undone"><td>git reset --hard HEAD~1</td><td>Undo commit &amp; discard changes</td></tr>
+      <tr data-tip="Creates a new commit that undoes a previous one, preserving full history - safe for shared branches" data-example="git revert a3f5c2d"><td>git revert &lt;commit&gt;</td><td>Create a revert commit</td></tr>
     </table>
   </div>
 
@@ -884,7 +884,7 @@
       <tr data-tip="Saves uncommitted changes to a temporary stack so you can switch branches with a clean working directory" data-example="git stash"><td>git stash</td><td>Stash current changes</td></tr>
       <tr data-tip="Shows all saved stashes with index numbers, e.g. stash@{0}, and the branch they were saved on" data-example="git stash list"><td>git stash list</td><td>List all stashes</td></tr>
       <tr data-tip="Applies the most recent stash to your working directory and removes it from the stash stack" data-example="git stash pop"><td>git stash pop</td><td>Apply &amp; remove latest stash</td></tr>
-      <tr data-tip="Permanently deletes a stash from the list; removes the most recent one if no stash is specified" data-example="git stash drop" data-danger="Destructive — permanently deletes the stash entry, cannot be recovered"><td>git stash drop</td><td>Discard a stash (latest by default)</td></tr>
+      <tr data-tip="Permanently deletes a stash from the list; removes the most recent one if no stash is specified" data-example="git stash drop" data-danger="Destructive - permanently deletes the stash entry, cannot be recovered"><td>git stash drop</td><td>Discard a stash (latest by default)</td></tr>
       <tr data-tip="Applies a specific stash by index without removing it from the stack, useful for reusing a stash" data-example="git stash apply stash@{2}"><td>git stash apply stash@{n}</td><td>Apply a specific stash</td></tr>
     </table>
   </div>
@@ -920,7 +920,7 @@
       <tr data-tip="Opens a prompt to create a pull request from your current branch to the base branch" data-example="gh pr create --title &quot;Add login page&quot; --body &quot;Closes #12&quot;"><td>gh pr create</td><td>Open a new pull request</td></tr>
       <tr data-tip="Lists all open pull requests for the current repository with their number, title, and branch" data-example="gh pr list"><td>gh pr list</td><td>List open pull requests</td></tr>
       <tr data-tip="Shows the title, description, status, and review state of a pull request" data-example="gh pr view 42"><td>gh pr view</td><td>View current branch PR</td></tr>
-      <tr data-tip="Merges a pull request using merge commit, squash, or rebase — prompts for strategy if not specified" data-example="gh pr merge 42 --squash"><td>gh pr merge</td><td>Merge a pull request</td></tr>
+      <tr data-tip="Merges a pull request using merge commit, squash, or rebase - prompts for strategy if not specified" data-example="gh pr merge 42 --squash"><td>gh pr merge</td><td>Merge a pull request</td></tr>
       <tr data-tip="Checks out the branch for a pull request locally so you can test or review the changes" data-example="gh pr checkout 42"><td>gh pr checkout &lt;number&gt;</td><td>Check out a PR locally</td></tr>
       <tr data-tip="Submits an approval review on a pull request, moving it toward merge readiness" data-example="gh pr review 42 --approve"><td>gh pr review --approve</td><td>Approve a pull request</td></tr>
     </table>
@@ -1174,7 +1174,7 @@
   // ── Theme toggle ───────────────────────────────────────────────────────────
   const themeToggle  = document.getElementById('themeToggle');
   const savedTheme   = localStorage.getItem('git-theme');
-  // Dark is always the default — only go light if user explicitly toggled it
+  // Dark is always the default - only go light if user explicitly toggled it
   if (savedTheme === 'light') {
     document.body.classList.add('light');
   }
